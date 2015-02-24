@@ -20,18 +20,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author jabelar
@@ -46,59 +47,35 @@ public class BlockCloud extends Block
         // DEBUG
         System.out.println("BlockCloud constructor");
         // override default values of Block, where appropriate
-        setBlockName("magicbeanscloud");
-        setBlockTextureName("magicbeans:cloud");
+        setUnlocalizedName("magicbeanscloud");
         setCreativeTab(CreativeTabs.tabBlock);
         stepSound = soundTypeSnow;
         blockParticleGravity = 1.0F;
         slipperiness = 0.6F;
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        opaque = isOpaqueCube();
+//        opaque = isOpaqueCube();
         lightOpacity = 20; // cast a light shadow
-        canBlockGrass = !getMaterial().getCanBlockGrass();
+//        canBlockGrass = !getMaterial().getCanBlockGrass();
         setBlockUnbreakable();
         setTickRandomly(false);
         setLightLevel(0.5F); // redstone light has light value of 1.0F
         useNeighborBrightness = false;
     }
 
-//
-//    @Override
-//	public MapColor getMapColor(int p_149728_1_)
-//    {
-//        return getMaterial().getMaterialMapColor();
-//    }
-//
 //    /**
-//     * Indicate if a material is a normal solid opaque cube
+//     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
 //     */
 //    @Override
-//	@SideOnly(Side.CLIENT)
-//    public boolean isBlockNormalCube()
+//	public boolean renderAsNormalBlock()
 //    {
-//        return blockMaterial.blocksMovement() && renderAsNormalBlock();
+//        return true;
 //    }
-//
+
 //    @Override
-//	public boolean isNormalCube()
+//	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
 //    {
-//        return blockMaterial.isOpaque() && renderAsNormalBlock() && !canProvidePower();
+//        return !blockMaterial.blocksMovement();
 //    }
-
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return true;
-    }
-
-    @Override
-	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
-    {
-        return !blockMaterial.blocksMovement();
-    }
 
     /**
      * The type of render function that is called for this block
@@ -109,78 +86,12 @@ public class BlockCloud extends Block
         return 0;
     }
 
-//    /**
-//     * Sets how many hits it takes to break a block.
-//     */
-//    @Override
-//	public Block setHardness(float parHardness)
-//    {
-//        blockHardness = parHardness;
-//
-//        if (blockResistance < parHardness * 5.0F)
-//        {
-//            blockResistance = parHardness * 5.0F;
-//        }
-//
-//        return this;
-//    }
-//
-//    /**
-//     * This method will set the hardness of the block to -1, making it indestructible
-//     */
-//    @Override
-//	public Block setBlockUnbreakable()
-//    {
-//        setHardness(-1.0F);
-//        return this;
-//    }
-//
-//    /**
-//     * Returns the block hardness at a location. Args: world, x, y, z
-//     */
-//    @Override
-//	public float getBlockHardness(World p_149712_1_, int p_149712_2_, int p_149712_3_, int p_149712_4_)
-//    {
-//        return blockHardness;
-//    }
-//
-//
-//    @Override
-//	@Deprecated //Forge: New Metadata sensitive version.
-//    public boolean hasTileEntity()
-//    {
-//        return hasTileEntity(0);
-//    }
-//
-//    /**
-//     * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
-//     */
-//    @Override
-//	@SideOnly(Side.CLIENT)
-//    public int getMixedBrightnessForBlock(IBlockAccess parBlockAccess, int parX, int parY, int parZ)
-//    {
-//        Block block = parBlockAccess.getBlock(parX, parY, parZ);
-//        int l = parBlockAccess.getLightBrightnessForSkyBlocks(parX, parY, parZ, block.getLightValue(parBlockAccess, parX, parY, parZ));
-//        return l;
-//    }
-//
-//    /**
-//     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-//     * coordinates.  Args: blockAccess, x, y, z, side
-//     */
-//    @Override
-//	@SideOnly(Side.CLIENT)
-//    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
-//    {
-//    	return true;
-//    }
-
     /**
      * Returns true if the given side of this block type should be rendered (if it's solid or not), if the adjacent
      * block is at the given coordinates. Args: blockAccess, x, y, z, side
      */
     @Override
-	public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_)
+	public boolean isBlockSolid(IBlockAccess p_149747_1_, BlockPos parPos, EnumFacing parSide)
     {
         return getMaterial().isSolid();
     }
@@ -195,24 +106,15 @@ public class BlockCloud extends Block
         return getMaterial().isOpaque();
     }
 
- //    /**
-//     * Returns how much this block can resist explosions from the passed in entity.
+//    /**
+//     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
 //     */
 //    @Override
-//	public float getExplosionResistance(Entity p_149638_1_)
+//	@SideOnly(Side.CLIENT)
+//    public int getRenderBlockPass()
 //    {
-//        return blockResistance / 5.0F;
+//        return 1;
 //    }
-
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
-    @Override
-	@SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
-    {
-        return 1;
-    }
 
     @Override
 	@SideOnly(Side.CLIENT)
@@ -220,17 +122,6 @@ public class BlockCloud extends Block
     {
         return 0xFFFFFF; // white
     }
-
-//    /**
-//     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-//     * when first determining what to render.
-//     */
-//    @Override
-//	@SideOnly(Side.CLIENT)
-//    public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
-//    {
-//        return 0x000000;
-//    }
 
     /**
      * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
@@ -253,9 +144,9 @@ public class BlockCloud extends Block
      * @return True if the block is solid on the specified side.
      */
     @Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	public boolean isSideSolid(IBlockAccess world, BlockPos parPos, EnumFacing parSide)
     {
-        return (side == ForgeDirection.UP); // can only build on top (cloud is generated not built)
+        return (parSide == EnumFacing.UP); // can only build on top (cloud is generated not built)
     }
 
     /**
@@ -269,7 +160,7 @@ public class BlockCloud extends Block
      * @return True if the block is replaceable by another block
      */
     @Override
-	public boolean isReplaceable(IBlockAccess world, int x, int y, int z)
+	public boolean isReplaceable(World world, BlockPos parPos)
     {
         return getMaterial().isReplaceable();
     }
@@ -286,7 +177,7 @@ public class BlockCloud extends Block
      * @return A number ranging from 0 to 300 relating used to determine if the block will be consumed by fire
      */
     @Override
-	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face)
+	public int getFlammability(IBlockAccess world, BlockPos parPos, EnumFacing parSide)
     {
         return 0;
     }
@@ -305,7 +196,7 @@ public class BlockCloud extends Block
      * @return True if this block sustains fire, meaning it will never go out.
      */
     @Override
-	public boolean isFireSource(World world, int x, int y, int z, ForgeDirection side)
+	public boolean isFireSource(World parWorld, BlockPos parPos, EnumFacing parSide)
     {
         return false;
     }
@@ -320,7 +211,7 @@ public class BlockCloud extends Block
      * @return The number of items to drop
      */
     @Override
-	public int quantityDropped(int meta, int fortune, Random random)
+	public int quantityDropped(IBlockState parState, int parFortune, Random parRandom)
     {
         /**
          * Returns the usual quantity dropped by the block plus a bonus of 1 to 'i' (inclusive).
@@ -340,59 +231,28 @@ public class BlockCloud extends Block
      * @return A ArrayList containing all items this block drops
      */
     @Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+	public ArrayList<ItemStack> getDrops(IBlockAccess world, BlockPos parPos, IBlockState parState, int parFortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         return ret;
     }
 
-    /**
-     * Return true from this function if the player with silk touch can harvest this block directly, and not it's normal drops.
-     *
-     * @param world The world
-     * @param player The player doing the harvesting
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
-     * @param metadata The metadata
-     * @return True if the block can be directly harvested using silk touch
-     */
     @Override
-	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+	public boolean canSilkHarvest(World parWorld, BlockPos parPos, IBlockState parState, EntityPlayer parPlayer)
     {
     	return false;
     }
 
-    /**
-     * Determines if a specified mob type can spawn on this block, returning false will
-     * prevent any mob from spawning on the block.
-     *
-     * @param type The Mob Category Type
-     * @param world The current world
-     * @param x The X Position
-     * @param y The Y Position
-     * @param z The Z Position
-     * @return True to allow a mob of the specified category to spawn, false to prevent it.
-     */
     @Override
-	public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
+	public boolean canCreatureSpawn(IBlockAccess parWorld, BlockPos parPos, SpawnPlacementType parType)
     {
     	// TODO
     	// probably want to limit by creature type
-         return true;
+        return true;
     }
 
-    /**
-     * Called to determine whether to allow the a block to handle its own indirect power rather than using the default rules.
-     * @param world The world
-     * @param x The x position of this block instance
-     * @param y The y position of this block instance
-     * @param z The z position of this block instance
-     * @param side The INPUT side of the block to be powered - ie the opposite of this block's output side
-     * @return Whether Block#isProvidingWeakPower should be called when determining indirect power
-     */
     @Override
-	public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side)
+	public boolean shouldCheckWeakPower(IBlockAccess parWorld, BlockPos parPos, EnumFacing parSide)
     {
         return false;
     }
@@ -406,7 +266,7 @@ public class BlockCloud extends Block
      * @return
      */
     @Override
-	public boolean isToolEffective(String type, int metadata)
+	public boolean isToolEffective(String parType, IBlockState parState)
     {
         return false;
     }

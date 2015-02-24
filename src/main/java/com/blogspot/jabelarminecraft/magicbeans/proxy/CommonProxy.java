@@ -84,7 +84,6 @@ public class CommonProxy
         registerBlocks();
         registerItems();
         registerTileEntities();
-        registerRecipes();
         registerModEntities();
         registerEntitySpawns();
         registerFuelHandlers();
@@ -228,9 +227,9 @@ public class CommonProxy
     public void registerBlocks()
     {
         //example: GameRegistry.registerBlock(blockTomato, "tomatoes");
-    	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, "magicbeanstalk");
-    	GameRegistry.registerBlock(MagicBeans.blockMagicBeansVine, "magicbeansvine");
-    	GameRegistry.registerBlock(MagicBeans.blockCloud, "magicbeanscloud");
+    	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, MagicBeans.blockMagicBeanStalk.getUnlocalizedName());
+    	GameRegistry.registerBlock(MagicBeans.blockMagicBeansVine, MagicBeans.blockMagicBeansVine.getUnlocalizedName());
+    	GameRegistry.registerBlock(MagicBeans.blockCloud, MagicBeans.blockCloud.getUnlocalizedName());
     }
 
     /** 
