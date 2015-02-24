@@ -22,9 +22,16 @@ package com.blogspot.jabelarminecraft.magicbeans.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.model.ModelVillager;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -45,13 +52,6 @@ import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderGiant;
 import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderMysteriousStranger;
-
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 
 public class ClientProxy extends CommonProxy 
@@ -143,8 +143,17 @@ public class ClientProxy extends CommonProxy
 	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenEggThrown.class, new RenderGoldenEggThrown(MagicBeans.itemGoldenEgg)); 
 	    RenderingRegistry.registerEntityRenderingHandler(EntityCowMagicBeans.class, new RenderCowMagicBeans(new ModelCow(), 0.5F)); 
 	    RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousStranger.class, new RenderMysteriousStranger(new ModelVillager(0.0F), 0.5F));    
-    	RenderingRegistry.registerEntityRenderingHandler(EntityGiant.class, new RenderGiant(new ModelGiant(0.0F), 0.5F));    
+    	RenderingRegistry.registerEntityRenderingHandler(EntityGiant.class, new RenderGiant(new ModelGiant(0.0F), 0.5F));  
+    	
+    	registerItemRenderers();
     }
+	
+	public void registerItemRenderers()
+	{
+    	RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+        
+    	renderItem.getItemModelMesher().register(MagicBeans.itemGoldenEgg, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.itemGoldenEgg.getName(), "inventory"));
+	}
 	
 	/*	 
 	 * Thanks to CoolAlias for this tip!

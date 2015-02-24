@@ -21,12 +21,13 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 
 /**
  * @author jabelar
@@ -38,16 +39,14 @@ public class ItemArmorSafeFalling extends ItemArmor
 	
 	public String textureName;
 
-	public ItemArmorSafeFalling(String parUnlocalizedName, ArmorMaterial parMaterial, String parTextureName, int parArmorType) 
+	public ItemArmorSafeFalling(String parUnlocalizedName, ArmorMaterial parMaterial, int parArmorType) 
 	{
 	    super(parMaterial, 0, parArmorType);
 	    
 	    // DEBUG
 	    // System.out.println("Constructor for ItemArmorSafeFalling");
 	    
-	    textureName = parTextureName;
 	    setUnlocalizedName(parUnlocalizedName);
-	    setTextureName(MagicBeans.MODID + ":" + parUnlocalizedName);
 	}
 	
     @Override
@@ -71,7 +70,7 @@ public class ItemArmorSafeFalling extends ItemArmor
     @Override
 	public EnumRarity getRarity(ItemStack parItemStack)
     {
-        return EnumRarity.epic;
+        return EnumRarity.EPIC;
     }
 	
 	@Override

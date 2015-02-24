@@ -19,22 +19,21 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.items;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class ItemGoldenEgg extends Item
 {
+	private final String name = "golden_egg";
     public int colorBase;
     public int colorSpots;
     protected EntityGoldenEggThrown entityEgg;
@@ -47,10 +46,17 @@ public class ItemGoldenEgg extends Item
     
     public ItemGoldenEgg(String parEntityToSpawnName, int parPrimaryColor, int parSecondaryColor)
     {
-        this.maxStackSize = 16; // same as regular egg
-        this.setCreativeTab(CreativeTabs.tabMaterials);
+    	GameRegistry.registerItem(this, name);
+        setUnlocalizedName(MagicBeans.MODID+":"+name);
+    	maxStackSize = 16; // same as regular egg
+        setCreativeTab(CreativeTabs.tabMaterials);
         colorBase = parPrimaryColor;
         colorSpots = parSecondaryColor;
+    }
+    
+    public String getName()
+    {
+    	return name;
     }
 
 	/**
