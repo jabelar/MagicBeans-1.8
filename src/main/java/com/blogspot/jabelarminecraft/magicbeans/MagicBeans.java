@@ -47,7 +47,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import com.blogspot.jabelarminecraft.magicbeans.armor.ItemArmorSafeFalling;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockCloud;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
-import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeansVine;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenEgg;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenGooseMeat;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemMagicBeans;
@@ -101,12 +100,11 @@ public class MagicBeans
     // instantiate blocks
     // need to instantiate beanstalk block before item as the item constructor associates with block
     public final static Block blockMagicBeanStalk = new BlockMagicBeanStalk();
-	public final static Block blockMagicBeansVine = new BlockMagicBeansVine();
 	public final static Block blockCloud = new BlockCloud();
 
     // instantiate items
 	// important to do this after blocks where item is associate with custom block
-    public final static ItemGoldenEgg itemGoldenEgg = (ItemGoldenEgg) new ItemGoldenEgg().setTextureName("magicbeans:golden_egg");;
+    public final static ItemGoldenEgg itemGoldenEgg = new ItemGoldenEgg();
     public final static Item magicBeans = new ItemMagicBeans();
     // public final static ItemArmor bootsOfSafeFalling = (ItemArmor) new ItemArmor(ItemArmor.ArmorMaterial.CLOTH, 1, 3).setUnlocalizedName("bootsofsafefalling").setTextureName("minecraft:chainmail_boots");
     // public final static ItemArmor helmetOfSafeFalling = new ItemArmorSafeFalling("helmet_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 0);

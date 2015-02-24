@@ -25,21 +25,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+// import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class BlockCropMagicBeans extends BlockBush implements IGrowable
 {
-    @SideOnly(Side.CLIENT)
-    protected IIcon[] iconArray;
+//    @SideOnly(Side.CLIENT)
+//    protected IIcon[] iconArray;
     
     protected boolean isFullyGrown = false;
 
@@ -148,4 +147,26 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
     {
         incrementGrowStage(parWorld, parX, parY, parZ);
     }
+
+	@Override
+	public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_,
+			IBlockState p_176473_3_, boolean p_176473_4_) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canUseBonemeal(World worldIn, Random p_180670_2_,
+			BlockPos p_180670_3_, IBlockState p_180670_4_) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void grow(World worldIn, Random p_176474_2_, BlockPos p_176474_3_,
+			IBlockState p_176474_4_) {
+		// TODO Auto-generated method stub
+		
+	}
 }

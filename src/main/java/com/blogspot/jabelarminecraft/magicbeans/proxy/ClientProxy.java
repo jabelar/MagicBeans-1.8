@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -156,6 +157,14 @@ public class ClientProxy extends CommonProxy
     	renderItem.getItemModelMesher().register(MagicBeans.itemGoldenEgg, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.itemGoldenEgg.getUnlocalizedName(), "inventory"));
     	renderItem.getItemModelMesher().register(MagicBeans.goldenGooseMeat, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.goldenGooseMeat.getUnlocalizedName(), "inventory"));
     	renderItem.getItemModelMesher().register(MagicBeans.bootsOfSafeFalling, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.bootsOfSafeFalling.getUnlocalizedName(), "inventory"));
+	}
+	
+	public void registerBlockRenderers()
+	{
+    	RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+        
+    	renderItem.getItemModelMesher().register(Item.getItemFromBlock(MagicBeans.blockCloud), 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.blockCloud.getUnlocalizedName(), "inventory"));
+    	renderItem.getItemModelMesher().register(Item.getItemFromBlock(MagicBeans.blockMagicBeanStalk), 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.blockMagicBeanStalk.getUnlocalizedName(), "inventory"));
 	}
 	
 	/*	 

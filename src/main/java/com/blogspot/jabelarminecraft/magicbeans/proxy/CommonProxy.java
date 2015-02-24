@@ -228,7 +228,6 @@ public class CommonProxy
     {
         //example: GameRegistry.registerBlock(blockTomato, "tomatoes");
     	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, MagicBeans.blockMagicBeanStalk.getUnlocalizedName());
-    	GameRegistry.registerBlock(MagicBeans.blockMagicBeansVine, MagicBeans.blockMagicBeansVine.getUnlocalizedName());
     	GameRegistry.registerBlock(MagicBeans.blockCloud, MagicBeans.blockCloud.getUnlocalizedName());
     }
 
