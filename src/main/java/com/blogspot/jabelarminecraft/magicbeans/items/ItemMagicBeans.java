@@ -35,7 +35,6 @@ public class ItemMagicBeans extends ItemSeedFoodMagicBeans
     {
         super(1, 0.3F, MagicBeans.blockMagicBeanStalk, Blocks.farmland);
         setUnlocalizedName("magicbeans");
-        setTextureName("magicbeans:magicbeans");
         setCreativeTab(CreativeTabs.tabMaterials);
     }
     

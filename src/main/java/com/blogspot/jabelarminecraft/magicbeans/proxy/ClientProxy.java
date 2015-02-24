@@ -32,6 +32,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -78,7 +79,8 @@ public class ClientProxy extends CommonProxy
 		super.fmlLifeCycleEvent(event);
 
         // do client-specific stuff
-        registerRenderers();
+        registerEntityRenderers();
+    	registerItemRenderers();
 	}
 	
 	@Override
@@ -135,7 +137,7 @@ public class ClientProxy extends CommonProxy
 	/**
 	 * Registers the entity renderers
 	 */
-	public void registerRenderers() 
+	public void registerEntityRenderers() 
     {
 		// the float parameter passed to the Render class is the shadow size for the entity
       
@@ -144,15 +146,16 @@ public class ClientProxy extends CommonProxy
 	    RenderingRegistry.registerEntityRenderingHandler(EntityCowMagicBeans.class, new RenderCowMagicBeans(new ModelCow(), 0.5F)); 
 	    RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousStranger.class, new RenderMysteriousStranger(new ModelVillager(0.0F), 0.5F));    
     	RenderingRegistry.registerEntityRenderingHandler(EntityGiant.class, new RenderGiant(new ModelGiant(0.0F), 0.5F));  
-    	
-    	registerItemRenderers();
     }
 	
 	public void registerItemRenderers()
 	{
     	RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
         
-    	renderItem.getItemModelMesher().register(MagicBeans.itemGoldenEgg, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.itemGoldenEgg.getName(), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.magicBeans, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.magicBeans.getUnlocalizedName(), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.itemGoldenEgg, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.itemGoldenEgg.getUnlocalizedName(), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.goldenGooseMeat, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.goldenGooseMeat.getUnlocalizedName(), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.bootsOfSafeFalling, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.bootsOfSafeFalling.getUnlocalizedName(), "inventory"));
 	}
 	
 	/*	 

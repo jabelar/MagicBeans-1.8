@@ -23,12 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author jabelar
@@ -36,13 +34,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class ItemGoldenGooseMeat extends ItemFood
 {
-
     public ItemGoldenGooseMeat(int p_i45341_1_, float p_i45341_2_, boolean p_i45341_3_)
     {
         super(p_i45341_1_, p_i45341_2_, p_i45341_3_);
         setAlwaysEdible();
-        setUnlocalizedName("golden_goose_meat").
-        setTextureName(MagicBeans.MODID+":golden_goose_meat");
+        setUnlocalizedName("golden_goose_meat");
     }
 
     @Override
@@ -58,7 +54,7 @@ public class ItemGoldenGooseMeat extends ItemFood
     @Override
 	public EnumRarity getRarity(ItemStack parItemStack)
     {
-        return EnumRarity.epic;
+        return EnumRarity.EPIC;
     }
 
     @Override
@@ -66,7 +62,7 @@ public class ItemGoldenGooseMeat extends ItemFood
     {
         if (!parWorld.isRemote)
         {
-            parPlayer.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 2400, 0)); // absorption
+            parPlayer.addPotionEffect(new PotionEffect(Potion.absorption.id, 2400, 0)); // absorption
             parPlayer.addPotionEffect(new PotionEffect(Potion.heal.id, 2400, 0)); // instant health
             parPlayer.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 2400, 0)); // strength
         }

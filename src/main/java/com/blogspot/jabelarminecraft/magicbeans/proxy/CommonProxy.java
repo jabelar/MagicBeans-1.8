@@ -39,6 +39,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -253,13 +254,13 @@ public class CommonProxy
 
         // spawn eggs are registered during entity registration
  
-        GameRegistry.registerItem(MagicBeans.itemGoldenEgg, "goldenEgg");
-        GameRegistry.registerItem(MagicBeans.magicBeans, "magicbeans");
-        // GameRegistry.registerItem(MagicBeans.helmetOfSafeFalling, "helmet_safe_falling");
-        // GameRegistry.registerItem(MagicBeans.chestplateOfSafeFalling, "chestplate_safe_falling");
-        // GameRegistry.registerItem(MagicBeans.leggingsOfSafeFalling, "leggings_safe_falling");
-        GameRegistry.registerItem(MagicBeans.bootsOfSafeFalling, "boots_safe_falling");
-        GameRegistry.registerItem(MagicBeans.goldenGooseMeat, "golden_goose_meat");
+        GameRegistry.registerItem(MagicBeans.itemGoldenEgg, MagicBeans.itemGoldenEgg.getUnlocalizedName());
+        GameRegistry.registerItem(MagicBeans.magicBeans, MagicBeans.magicBeans.getUnlocalizedName());
+        // GameRegistry.registerItem(MagicBeans.helmetOfSafeFalling, MagicBeans.helmetOfSafeFalling.getName());
+        // GameRegistry.registerItem(MagicBeans.chestplateOfSafeFalling, MagicBeans.chestplateOfSafeFalling.getName());
+        // GameRegistry.registerItem(MagicBeans.leggingsOfSafeFalling, MagicBeans.leggingsOfSafeFalling.getName());
+        GameRegistry.registerItem(MagicBeans.bootsOfSafeFalling, MagicBeans.bootsOfSafeFalling.getUnlocalizedName());
+        GameRegistry.registerItem(MagicBeans.goldenGooseMeat, MagicBeans.goldenGooseMeat.getUnlocalizedName());
         
         // example: GameRegistry.registerCustomItemStack(name, itemStack);
     }
@@ -354,8 +355,8 @@ public class CommonProxy
      // name passed must match entity name string
      public void registerSpawnEgg(String parSpawnName, int parEggColor, int parEggSpotsColor)
      {
-       Item itemSpawnEgg = new MagicBeansMonsterPlacer(parSpawnName, parEggColor, parEggSpotsColor).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(MagicBeans.MODID+":spawn_egg");
-       GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
+       Item itemSpawnEgg = new MagicBeansMonsterPlacer(parSpawnName, parEggColor, parEggSpotsColor).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase());
+       GameRegistry.registerItem(itemSpawnEgg, itemSpawnEgg.getUnlocalizedName());
      }
 
      /**
@@ -394,7 +395,7 @@ public class CommonProxy
          BiomeGenBase[] allBiomes = Iterators.toArray(Iterators.filter(Iterators.forArray(BiomeGenBase.getBiomeGenArray()), Predicates.notNull()), BiomeGenBase.class);
          for (int i=0; i<allBiomes.length; i++)
          {
-             EntityRegistry.addSpawn(parEntity.getClass(), parChance, parMinGroup, parMaxGroup, EnumCreatureType.creature, 
+             EntityRegistry.addSpawn(parEntity.getClass(), parChance, parMinGroup, parMaxGroup, EnumCreatureType.CREATURE, 
            	      allBiomes[i]); //change the values to vary the spawn rarity, biome, etc.             	
          }
      }

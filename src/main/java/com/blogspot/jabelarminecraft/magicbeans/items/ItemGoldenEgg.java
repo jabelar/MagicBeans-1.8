@@ -24,20 +24,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 public class ItemGoldenEgg extends Item
 {
-	private final String name = "golden_egg";
     public int colorBase;
     public int colorSpots;
     protected EntityGoldenEggThrown entityEgg;
-    protected IIcon theIcon;
+//    protected IIcon theIcon;
 
     public ItemGoldenEgg() 
     {
@@ -46,17 +44,11 @@ public class ItemGoldenEgg extends Item
     
     public ItemGoldenEgg(String parEntityToSpawnName, int parPrimaryColor, int parSecondaryColor)
     {
-    	GameRegistry.registerItem(this, name);
-        setUnlocalizedName(MagicBeans.MODID+":"+name);
+        setUnlocalizedName("golden_egg");
     	maxStackSize = 16; // same as regular egg
         setCreativeTab(CreativeTabs.tabMaterials);
         colorBase = parPrimaryColor;
         colorSpots = parSecondaryColor;
-    }
-    
-    public String getName()
-    {
-    	return name;
     }
 
 	/**
@@ -88,12 +80,12 @@ public class ItemGoldenEgg extends Item
         return (parColorType == 0) ? colorBase : colorSpots;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses()
-    {
-        return false;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public boolean requiresMultipleRenderPasses()
+//    {
+//        return false;
+//    }
     
     @Override
     // Doing this override means that there is no localization for language
@@ -104,22 +96,22 @@ public class ItemGoldenEgg extends Item
 	}  
 
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        super.registerIcons(par1IconRegister);
-        this.theIcon = par1IconRegister.registerIcon(this.getIconString() + "_overlay");
-    }
-    
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int par1, int par2)
-    {
-        return par2 > 0 ? this.theIcon : super.getIconFromDamageForRenderPass(par1, par2);
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void registerIcons(IIconRegister par1IconRegister)
+//    {
+//        super.registerIcons(par1IconRegister);
+//        theIcon = par1IconRegister.registerIcon(this.getIconString() + "_overlay");
+//    }
+//    
+//    /**
+//     * Gets an icon index based on an item's damage value and the given render pass
+//     */
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public IIcon getIconFromDamageForRenderPass(int par1, int par2)
+//    {
+//        return par2 > 0 ? theIcon : super.getIconFromDamageForRenderPass(par1, par2);
+//    }
 
 }
