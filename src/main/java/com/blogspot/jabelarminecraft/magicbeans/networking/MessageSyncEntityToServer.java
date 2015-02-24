@@ -19,15 +19,14 @@ package com.blogspot.jabelarminecraft.magicbeans.networking;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
-
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * @author jabelar
@@ -71,7 +70,6 @@ public class MessageSyncEntityToServer implements IMessage
 
     public static class Handler implements IMessageHandler<MessageSyncEntityToServer, IMessage> 
     {
-        
         @Override
         public IMessage onMessage(MessageSyncEntityToServer message, MessageContext ctx) 
         {
