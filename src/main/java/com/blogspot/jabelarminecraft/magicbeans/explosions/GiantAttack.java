@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -85,8 +86,8 @@ public class GiantAttack
         // DEBUG
         System.out.println("Attack region = "+minX+", "+minY+", "+minZ+" to "+maxX+", "+maxY+", "+maxZ);
         
-        List entityList = worldObj.getEntitiesWithinAABBExcludingEntity(theGiant, AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ));
-        Vec3 vec3 = Vec3.createVectorHelper(attackOriginX, attackOriginY, attackOriginZ);
+        List entityList = worldObj.getEntitiesWithinAABBExcludingEntity(theGiant, AxisAlignedBB.fromBounds(minX, minY, minZ, maxX, maxY, maxZ));
+        Vec3 vec3 = new Vec3(attackOriginX, attackOriginY, attackOriginZ);
 
         // DEBUG
         System.out.println("Found "+entityList.size()+" entities in attack range");
@@ -113,7 +114,7 @@ public class GiantAttack
                     knockbackFactorX /= knockbackMagnitude;
                     knockbackFactorY /= knockbackMagnitude;
                     knockbackFactorZ /= knockbackMagnitude;
-                    double protectionFromBlocks = worldObj.getBlockDensity(vec3, theEntity.boundingBox);
+                    double protectionFromBlocks = worldObj.getBlockDensity(vec3, theEntity.getBoundingBox());
                     theEntity.motionX += knockbackFactorX / 2;
                     theEntity.motionY += knockbackFactorY / 2;
                     theEntity.motionZ += knockbackFactorZ / 2;
@@ -128,8 +129,7 @@ public class GiantAttack
             }
         }
         worldObj.playSoundEffect(attackOriginX, attackOriginY, attackOriginZ, "random.explode", 4.0F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-        worldObj.spawnParticle("largeexplode", attackOriginX, attackOriginY, attackOriginZ, 1.0D, 0.0D, 0.0D);
-//        theGiant.setIsPerformingSpecialAttack(false);
+        worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, attackOriginX, attackOriginY, attackOriginZ, 1.0D, 0.0D, 0.0D, new int[0]);
     }
 
     /**

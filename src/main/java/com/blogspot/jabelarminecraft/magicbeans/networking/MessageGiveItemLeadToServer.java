@@ -21,14 +21,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * @author jabelar
@@ -57,8 +56,7 @@ public class MessageGiveItemLeadToServer implements IMessage
     }
 
     public static class Handler implements IMessageHandler<MessageGiveItemLeadToServer, IMessage> 
-    {
-        
+    {       
         @Override
         public IMessage onMessage(MessageGiveItemLeadToServer message, MessageContext ctx) 
         {

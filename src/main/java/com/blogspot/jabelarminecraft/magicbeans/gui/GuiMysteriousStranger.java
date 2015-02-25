@@ -21,6 +21,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -29,9 +31,6 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemMagicBeansToServer;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author jabelar

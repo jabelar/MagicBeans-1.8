@@ -26,17 +26,16 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.GuiMessageDialog;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-
-import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.GuiMessageDialog;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import cpw.mods.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.eventhandler.Event.Result;
 
 // Thanks to minalien tutoral at http://minalien.com/minecraft-forge-feature-spotlight-config-guis/
 public class GuiConfigMagicBeans extends GuiConfig 
