@@ -23,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.model.ModelVillager;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -142,11 +143,12 @@ public class ClientProxy extends CommonProxy
     {
 		// the float parameter passed to the Render class is the shadow size for the entity
       
-	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenGoose.class, new RenderGoldenGoose(new ModelGoldenGoose(), 0.5F)); // 0.5F is shadow size 
-	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenEggThrown.class, new RenderGoldenEggThrown(MagicBeans.itemGoldenEgg)); 
-	    RenderingRegistry.registerEntityRenderingHandler(EntityCowMagicBeans.class, new RenderCowMagicBeans(new ModelCow(), 0.5F)); 
-	    RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousStranger.class, new RenderMysteriousStranger(new ModelVillager(0.0F), 0.5F));    
-    	RenderingRegistry.registerEntityRenderingHandler(EntityGiant.class, new RenderGiant(new ModelGiant(0.0F), 0.5F));  
+		RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenGoose.class, new RenderGoldenGoose(renderManager, new ModelGoldenGoose(), 0.5F)); // 0.5F is shadow size 
+	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenEggThrown.class, new RenderGoldenEggThrown(renderManager, MagicBeans.itemGoldenEgg)); 
+	    RenderingRegistry.registerEntityRenderingHandler(EntityCowMagicBeans.class, new RenderCowMagicBeans(renderManager, new ModelCow(), 0.5F)); 
+	    RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousStranger.class, new RenderMysteriousStranger(renderManager, new ModelVillager(0.0F), 0.5F));    
+    	RenderingRegistry.registerEntityRenderingHandler(EntityGiant.class, new RenderGiant(renderManager, new ModelGiant(0.0F), 0.5F));  
     }
 	
 	public void registerItemRenderers()

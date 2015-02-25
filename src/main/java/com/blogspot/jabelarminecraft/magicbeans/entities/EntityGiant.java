@@ -355,7 +355,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
           {
               if (entityAttackedBy != this)
               {
-                  entityToAttack = entityAttackedBy;
+                  this.setAttackTarget((EntityLivingBase) entityAttackedBy);
               }
           }
 	}
@@ -469,7 +469,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         else // do normal damage
         {
             lastDamage = damageAmount;
-            prevHealth = getHealth();
+//            prevHealth = getHealth();
             hurtResistantTime = maxHurtResistantTime;
             damageEntity(damageSource, damageAmount);
             hurtTime = maxHurtTime = 10;
@@ -492,8 +492,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
             return true;
         }
 
-        // Check for invlunerability
-        if (isEntityInvulnerable())
+        // Check for invulnerability
+        if (func_180431_b(parDamageSource))
         {
             return true;
         }
@@ -520,7 +520,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     @Override
 	protected void damageEntity(DamageSource parDamageSource, float parDamageAmount)
     {
-        if (!isEntityInvulnerable())
+        if (!func_180431_b(parDamageSource))
         {
             parDamageAmount = ForgeHooks.onLivingHurt(this, parDamageSource, parDamageAmount);
             if (parDamageAmount <= 0) return;
@@ -534,7 +534,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
             {
                 float f2 = getHealth();
                 setHealth(f2 - parDamageAmount);
-                func_110142_aN().func_94547_a(parDamageSource, f2, parDamageAmount);
+                getCombatTracker().func_94547_a(parDamageSource, f2, parDamageAmount);
                 setAbsorptionAmount(getAbsorptionAmount() - parDamageAmount);
             }
         }

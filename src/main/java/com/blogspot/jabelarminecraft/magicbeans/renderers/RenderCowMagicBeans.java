@@ -18,6 +18,7 @@ package com.blogspot.jabelarminecraft.magicbeans.renderers;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -38,9 +39,9 @@ public class RenderCowMagicBeans extends RenderLiving
 	 * @param parModelBase
 	 * @param parShadowSize
 	 */
-	public RenderCowMagicBeans(ModelBase parModelBase, float parShadowSize) 
+	public RenderCowMagicBeans(RenderManager parRenderManager, ModelBase parModelBase, float parShadowSize) 
 	{
-		super(parModelBase, parShadowSize);
+		super(parRenderManager, parModelBase, parShadowSize);
 		setEntityTexture();
 	}
 

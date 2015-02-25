@@ -18,6 +18,7 @@ package com.blogspot.jabelarminecraft.magicbeans.renderers;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
@@ -39,9 +40,9 @@ public class RenderGiant extends RenderLiving
     		{  0F , -2F , -5F , -10F , -15F, -12F, -10F, -5F , -2F ,  0F ,  2F ,  4F ,  6F,  8F, 
     		  11F , 15F , 20F , 35F , 55F , 80F , 90F };
 
-    public RenderGiant(ModelBase par1ModelBase, float parShadowSize)
+    public RenderGiant(RenderManager parRenderManager, ModelBase par1ModelBase, float parShadowSize)
     {
-        super(par1ModelBase, parShadowSize);
+        super(parRenderManager, par1ModelBase, parShadowSize);
         setEntityTexture();        
     }
  

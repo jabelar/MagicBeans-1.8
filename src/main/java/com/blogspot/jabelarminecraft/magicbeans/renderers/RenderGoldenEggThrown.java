@@ -21,36 +21,33 @@ package com.blogspot.jabelarminecraft.magicbeans.renderers;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.potion.PotionHelper;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+// import net.minecraft.util.IIcon;
 
 @SideOnly(Side.CLIENT)
 public class RenderGoldenEggThrown extends Render
 {
-    private final Item itemBasisForEntity;
-    private final int iconIndex;
+//    private final Item itemBasisForEntity;
+//    private final int iconIndex;
 
-    public RenderGoldenEggThrown(Item par1Item, int parIconIndex)
+    public RenderGoldenEggThrown(RenderManager parRenderManager, Item par1Item, int parIconIndex)
     {
-        itemBasisForEntity = par1Item;
-        iconIndex = parIconIndex;
+    	super(parRenderManager);
+//        itemBasisForEntity = par1Item;
+//        iconIndex = parIconIndex;
     }
 
-    public RenderGoldenEggThrown(Item par1Item)
+    public RenderGoldenEggThrown(RenderManager parRenderManager, Item par1Item)
     {
-        this(par1Item, 0);
+        this(parRenderManager, par1Item, 0);
     }
 
     /**
@@ -62,17 +59,12 @@ public class RenderGoldenEggThrown extends Render
     @Override
 	public void doRender(Entity parEntity, double parX, double parY, double parZ, float parIgnored1, float parIgnored2)
     {
-        IIcon iicon = itemBasisForEntity.getIconFromDamage(iconIndex);
-        
-        if (iicon != null)
-        {
+//        IIcon iicon = itemBasisForEntity.getIconFromDamage(iconIndex);
+//        
+//        if (iicon != null)
+//        {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)parX, (float)parY, (float)parZ);
-            // DEBUG
-//            System.out.println("Rendering on client side ="+parEntity.worldObj.isRemote);
-//            System.out.println("Thrown egg entity position ="+parEntity.posX+", "+parEntity.posY+", "+parEntity.posZ);
-//            System.out.println("Thrown egg entity server position ="+parEntity.serverPosX/32.0D+", "+parEntity.serverPosY/32.0D+", "+parEntity.serverPosZ/32.0D);
-//            System.out.println("Thrown egg entity motion ="+parEntity.motionX+", "+parEntity.motionY+", "+parEntity.motionZ);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(0.5F, 0.5F, 0.5F);
             int l = 0xF5E16F;
@@ -81,53 +73,62 @@ public class RenderGoldenEggThrown extends Render
             float f7 = (l & 255) / 255.0F;
             GL11.glColor4f(f5, f6, f7, 1.0F);
             bindEntityTexture(parEntity);
-            Tessellator tessellator = Tessellator.instance;
+            Tessellator tessellator = Tessellator.getInstance();
 
-            if (iicon == ItemPotion.func_94589_d("bottle_splash"))
-            {
-                int i = PotionHelper.func_77915_a(((EntityPotion)parEntity).getPotionDamage(), false);
-                float f2 = (i >> 16 & 255) / 255.0F;
-                float f3 = (i >> 8 & 255) / 255.0F;
-                float f4 = (i & 255) / 255.0F;
-                GL11.glColor3f(f2, f3, f4);
-                GL11.glPushMatrix();
-                invokeTesselator(tessellator, ItemPotion.func_94589_d("overlay"));
-                GL11.glPopMatrix();
-                GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            }
+//            if (iicon == ItemPotion.func_94589_d("bottle_splash"))
+//            {
+//                int i = PotionHelper.func_77915_a(((EntityPotion)parEntity).getPotionDamage(), false);
+//                float f2 = (i >> 16 & 255) / 255.0F;
+//                float f3 = (i >> 8 & 255) / 255.0F;
+//                float f4 = (i & 255) / 255.0F;
+//                GL11.glColor3f(f2, f3, f4);
+//                GL11.glPushMatrix();
+//                invokeTesselator(tessellator, ItemPotion.func_94589_d("overlay"));
+//                GL11.glPopMatrix();
+//                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+//            }
 
-            invokeTesselator(tessellator, iicon);
+//            invokeTesselator(tessellator, iicon);
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();
-        }
+//        }
     }
 
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
-    @Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return TextureMap.locationItemsTexture;
-    }
+	/* (non-Javadoc)
+	 * @see net.minecraft.client.renderer.entity.Render#getEntityTexture(net.minecraft.entity.Entity)
+	 */
+	@Override
+	protected ResourceLocation getEntityTexture(Entity parEntity) 
+	{
+		return null;
+	}
 
-    private void invokeTesselator(Tessellator par1Tessellator, IIcon par2Icon)
-    {
-        float minU = par2Icon.getMinU();
-        float maxU = par2Icon.getMaxU();
-        float minV = par2Icon.getMinV();
-        float maxV = par2Icon.getMaxV();
-        float f4 = 1.0F;
-        float f5 = 0.5F;
-        float f6 = 0.25F;
-        GL11.glRotatef(180.0F - renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        par1Tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, minU, maxV);
-        par1Tessellator.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, maxU, maxV);
-        par1Tessellator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, maxU, minV);
-        par1Tessellator.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, minU, minV);
-        par1Tessellator.draw();
-    }
+//    /**
+//     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+//     */
+//    @Override
+//	protected ResourceLocation getEntityTexture(Entity par1Entity)
+//    {
+//        return TextureMap.locationItemsTexture;
+//    }
+
+//    private void invokeTesselator(Tessellator par1Tessellator, IIcon par2Icon)
+//    {
+//        float minU = par2Icon.getMinU();
+//        float maxU = par2Icon.getMaxU();
+//        float minV = par2Icon.getMinV();
+//        float maxV = par2Icon.getMaxV();
+//        float f4 = 1.0F;
+//        float f5 = 0.5F;
+//        float f6 = 0.25F;
+//        GL11.glRotatef(180.0F - renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+//        GL11.glRotatef(-renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+//        par1Tessellator.startDrawingQuads();
+//        par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
+//        par1Tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, minU, maxV);
+//        par1Tessellator.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, maxU, maxV);
+//        par1Tessellator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, maxU, minV);
+//        par1Tessellator.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, minU, minV);
+//        par1Tessellator.draw();
+//    }
 }

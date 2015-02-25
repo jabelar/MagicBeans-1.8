@@ -18,6 +18,7 @@ package com.blogspot.jabelarminecraft.magicbeans.renderers;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -36,9 +37,9 @@ public class RenderMysteriousStranger extends RenderLiving
 {
     protected ResourceLocation mysteriousStrangerTexture;
 
-    public RenderMysteriousStranger(ModelBase par1ModelBase, float parShadowSize)
+    public RenderMysteriousStranger(RenderManager parRenderManager, ModelBase par1ModelBase, float parShadowSize)
     {
-        super(par1ModelBase, parShadowSize);
+        super(parRenderManager, par1ModelBase, parShadowSize);
         setEntityTexture();        
     }
  
@@ -74,7 +75,7 @@ public class RenderMysteriousStranger extends RenderLiving
     }
     
     @Override
-	protected void passSpecialRender(EntityLivingBase parEntity, double parX, double parY, double parZ)
+	public void passSpecialRender(EntityLivingBase parEntity, double parX, double parY, double parZ)
     {
 		super.passSpecialRender(parEntity, parX, parY, parZ);
 		if (parEntity.ticksExisted < 20 * 2)

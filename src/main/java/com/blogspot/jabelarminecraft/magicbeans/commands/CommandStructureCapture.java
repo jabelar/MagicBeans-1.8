@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
@@ -54,9 +55,7 @@ public class CommandStructureCapture implements ICommand
     static int signX ;
     static int signY ;
     static int signZ ;
-    
-   		
-	
+
 	public CommandStructureCapture()
 	{
 		    aliases = new ArrayList();
@@ -106,7 +105,7 @@ public class CommandStructureCapture implements ICommand
 		    	return;
 		    }
 
-		    thePlayer = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
+		    thePlayer = sender.getCommandSenderEntity();
 		    startX = Integer.parseInt(argString[0]);
 		    startY = Integer.parseInt(argString[1]);
 		    startZ = Integer.parseInt(argString[2]);
@@ -151,10 +150,11 @@ public class CommandStructureCapture implements ICommand
 		    	{
 		    		for (int indZ = 0; indZ < dimZ; indZ++)
 		    		{
-		    			blockNameArray[indX][indY][indZ] = Block.blockRegistry.getNameForObject(theWorld.getBlock(startX+indX, startY+indY, 
-		    					startZ+indZ));
-		    			blockMetaArray[indX][indY][indZ] = theWorld.getBlockMetadata(startX+indX, startY+indY, 
-		    					startZ+indZ);		    			
+		    			BlockPos theBlockPos = new BlockPos(startX+indX, startY+indY, startZ+indZ);
+		    			blockNameArray[indX][indY][indZ] = (String) Block.blockRegistry.getNameForObject(theWorld
+		    					.getBlockState(theBlockPos).getBlock());
+		    			blockMetaArray[indX][indY][indZ] = theWorld.getBlockState(theBlockPos)
+		    					.getBlock().getMetaFromState(theWorld.getBlockState(theBlockPos));		    			
 		    		}
 		    	}
 		    }
@@ -280,20 +280,26 @@ public class CommandStructureCapture implements ICommand
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender var1) {
+	public boolean canCommandSenderUseCommand(ICommandSender var1) 
+	{
 		return true;
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isUsernameIndex(String[] var1, int var2) {
+	public boolean isUsernameIndex(String[] var1, int var2) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see net.minecraft.command.ICommand#addTabCompletionOptions(net.minecraft.command.ICommandSender, java.lang.String[], net.minecraft.util.BlockPos)
+	 */
+	@Override
+	public List addTabCompletionOptions(ICommandSender sender, String[] args,
+			BlockPos pos) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

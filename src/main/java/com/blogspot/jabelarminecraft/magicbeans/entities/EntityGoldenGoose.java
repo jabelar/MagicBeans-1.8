@@ -37,6 +37,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
@@ -64,14 +65,14 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
         setupAI();
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	public boolean isAIEnabled()
-    {
-        return true;
-    }
+//    /**
+//     * Returns true if the newer Entity AI code should be run
+//     */
+//    @Override
+//	public boolean isAIEnabled()
+//    {
+//        return true;
+//    }
 
     @Override
 	protected void applyEntityAttributes()
@@ -138,7 +139,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
      * Called when the mob is falling. Calculates and applies fall damage.
      */
     @Override
-	protected void fall(float par1) {}
+    public void fall(float par1, float par2) { } // Does not fall normally, doesn't take fall damage.
 
     @Override
 	public boolean interact(EntityPlayer parPlayer) 
@@ -185,7 +186,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 
             if (getGrowingAge() >= 0)
             {
-                func_146082_f(parPlayer); // mating item
+            	setInLove(parPlayer); // mating item
             }
         }
         else if (theItem == Items.golden_apple)
@@ -195,7 +196,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 
             if (getGrowingAge() >= 0)
             {
-                func_146082_f(parPlayer); // mating item
+                setInLove(parPlayer); // mating item
             }
         }
 
@@ -279,7 +280,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     }
 
     @Override
-	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_)
+	protected void playStepSound(BlockPos parPos, Block parBlock)
     {
         playSound("mob.chicken.step", 0.15F, 1.0F);
     }

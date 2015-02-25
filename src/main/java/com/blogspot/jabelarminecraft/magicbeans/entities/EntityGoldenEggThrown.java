@@ -19,12 +19,12 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -65,7 +65,7 @@ public class EntityGoldenEggThrown extends EntityThrowable
         	int dropItem = MathHelper.getRandomIntegerInRange(rand, 0, 12);
         	if (dropItem == 0) // 1 in 12 chance of spawning entity, (chicken egg is 1 in 8)
         	{
-                EntityAnimal entityToSpawn = (EntityAnimal) EntityList.createEntityByName("magicbeans.Golden Goose", worldObj);
+                EntityAnimal entityToSpawn = new EntityGoldenGoose(worldObj); // (EntityAnimal) EntityList.createEntityByName("magicbeans.Golden Goose", worldObj);
                 entityToSpawn.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);
                 worldObj.spawnEntityInWorld(entityToSpawn);
         	}
@@ -79,7 +79,7 @@ public class EntityGoldenEggThrown extends EntityThrowable
 
         for (int j = 0; j < 8; ++j)
         {
-            worldObj.spawnParticle("snowballpoof", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+            worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
         }
 
         if (!worldObj.isRemote)

@@ -69,14 +69,14 @@ public class MaterialCloud extends Material
         return true;
     }
 
-    /**
-     * Will prevent grass from growing on dirt underneath and kill any grass below it if it returns true
-     */
-    @Override
-	public boolean getCanBlockGrass()
-    {
-        return true;
-    }
+//    /**
+//     * Will prevent grass from growing on dirt underneath and kill any grass below it if it returns true
+//     */
+//    @Override
+//	public boolean getCanBlockGrass()
+//    {
+//        return true;
+//    }
 
     /**
      * Returns if this material is considered solid or not
@@ -202,12 +202,12 @@ public class MaterialCloud extends Material
         return this; // allows chaining
     }
 
-    /**
-     * Returns true if blocks with this material can always be mined in adventure mode.
-     */
-    @Override
-	public boolean isAdventureModeExempt()
-    {
-        return isAdventureModeExempt;
-    }
+//    /**
+//     * Returns true if blocks with this material can always be mined in adventure mode.
+//     */
+//    @Override
+//	public boolean isAdventureModeExempt()
+//    {
+//        return isAdventureModeExempt;
+//    }
 }

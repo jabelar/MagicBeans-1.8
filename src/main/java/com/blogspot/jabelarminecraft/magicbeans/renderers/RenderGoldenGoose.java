@@ -21,25 +21,25 @@ package com.blogspot.jabelarminecraft.magicbeans.renderers;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderGoldenGoose extends RenderLiving
 {
     protected static final ResourceLocation goldenGooseTextures = new ResourceLocation("magicbeans:textures/entities/golden_goose.png");
 
-    public RenderGoldenGoose(ModelBase par1ModelBase, float par2)
+    public RenderGoldenGoose(RenderManager parRenderManager, ModelBase par1ModelBase, float par2)
     {
-        super(par1ModelBase, par2);
+        super(parRenderManager, par1ModelBase, par2);
     }
 
     /**

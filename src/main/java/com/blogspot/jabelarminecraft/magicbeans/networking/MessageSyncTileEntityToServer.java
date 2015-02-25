@@ -17,12 +17,11 @@
 package com.blogspot.jabelarminecraft.magicbeans.networking;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * @author jabelar
@@ -64,7 +63,6 @@ public class MessageSyncTileEntityToServer implements IMessage
 
     public static class Handler implements IMessageHandler<MessageSyncTileEntityToServer, IMessage> 
     {
-        
         @Override
         public IMessage onMessage(MessageSyncTileEntityToServer message, MessageContext ctx) 
         {
