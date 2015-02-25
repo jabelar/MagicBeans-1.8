@@ -80,9 +80,6 @@ public class ClientProxy extends CommonProxy
 		// do common stuff
 		super.fmlLifeCycleEvent(event);
 
-        // do client-specific stuff
-        registerEntityRenderers();
-    	registerItemRenderers();
 	}
 	
 	@Override
@@ -100,6 +97,9 @@ public class ClientProxy extends CommonProxy
 
     	// create sphere call list
     	createSphereCallList();
+    	
+        registerEntityRenderers();
+    	registerItemRenderers();
 	}
 	
 	@Override
@@ -154,7 +154,7 @@ public class ClientProxy extends CommonProxy
 	public void registerItemRenderers()
 	{
     	RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-        
+
     	renderItem.getItemModelMesher().register(MagicBeans.magicBeans, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.magicBeans.getUnlocalizedName(), "inventory"));
     	renderItem.getItemModelMesher().register(MagicBeans.itemGoldenEgg, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.itemGoldenEgg.getUnlocalizedName(), "inventory"));
     	renderItem.getItemModelMesher().register(MagicBeans.goldenGooseMeat, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.goldenGooseMeat.getUnlocalizedName(), "inventory"));

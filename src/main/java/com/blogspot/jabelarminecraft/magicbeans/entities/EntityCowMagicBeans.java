@@ -16,18 +16,22 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -71,6 +75,50 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
         		Entity entityLeashedTo = getLeashedToEntity();
         		if (entityLeashedTo instanceof EntityPlayer)
         		{
+        			EntityPlayer thePlayer = (EntityPlayer)entityLeashedTo;
+    	            MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(worldObj, thePlayer, 5.0D, true);
+
+    	            if (movingobjectposition == null)
+    	            {
+    	            	// DEBUG
+    	            	System.out.println("Can't create entity because moving object position is null");
+    	                return ;
+    	            }
+    	            else
+    	            {
+    	                if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+    	                {
+    	                    BlockPos thePos = movingobjectposition.func_178782_a();
+
+    	                    if (!worldObj.isBlockModifiable(thePlayer, thePos))
+    	                    {
+    	                        return ;
+    	                    }
+
+    	                    if (worldObj.getBlockState(thePos).getBlock() instanceof BlockLiquid)
+    	                    {
+    	                        Entity entity = spawnCreature(thePlayer, itemStackIn.getMetadata(), thePos.getX() + 0.5D, thePos.getY() + 0.5D, thePos.getZ() + 0.5D);
+
+    	                        if (entity != null)
+    	                        {
+    	                            if (entity instanceof EntityLivingBase && itemStackIn.hasDisplayName())
+    	                            {
+    	                                ((EntityLiving)entity).setCustomNameTag(itemStackIn.getDisplayName());
+    	                            }
+
+    	                            if (!playerIn.capabilities.isCreativeMode)
+    	                            {
+    	                                --itemStackIn.stackSize;
+    	                            }
+
+    	                            playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+    	                        }
+    	                    }
+    	                }
+
+    	                return itemStackIn;
+        	        }
+
         			EntityPlayer playerLeashedTo = (EntityPlayer) entityLeashedTo;
         			Vec3 playerLookVector = playerLeashedTo.getLookVec();
         			playerLeashedTo.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("A mysterious stranger appears!")));
@@ -106,6 +154,25 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     		}
     	}
     }
+    
+    protected MovingObjectPosition getMovingObjectPositionFromPlayer(World parWorld, EntityPlayer parPlayer, double parDistance, boolean parUseLiquids)
+    {
+        float f = parPlayer.prevRotationPitch + (parPlayer.rotationPitch - parPlayer.prevRotationPitch);
+        float f1 = parPlayer.prevRotationYaw + (parPlayer.rotationYaw - parPlayer.prevRotationYaw);
+        double vecX = parPlayer.posX ;
+        double vecY = parPlayer.posY + parPlayer.getEyeHeight();
+        double vecZ = parPlayer.posZ ;
+        Vec3 vec3 = new Vec3(vecX, vecY, vecZ);
+        float f2 = MathHelper.cos(-f1 * 0.017453292F - (float)Math.PI);
+        float f3 = MathHelper.sin(-f1 * 0.017453292F - (float)Math.PI);
+        float f4 = -MathHelper.cos(-f * 0.017453292F);
+        float f5 = MathHelper.sin(-f * 0.017453292F);
+        float f6 = f3 * f4;
+        float f7 = f2 * f4;
+        Vec3 vec31 = vec3.addVector(f6 * parDistance, f5 * parDistance, f7 * parDistance);
+        return parWorld.rayTraceBlocks(vec3, vec31, parUseLiquids, !parUseLiquids, false);
+    }
+
 
     @Override
 	protected Item getDropItem()
