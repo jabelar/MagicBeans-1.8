@@ -24,10 +24,10 @@ import net.minecraft.tileentity.TileEntity;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
+import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
-//	public boolean hasSpawnedCastle = false;
 	protected int ticksExisted = 0 ;	
 
     @Override
@@ -35,7 +35,6 @@ public class TileEntityMagicBeanStalk extends TileEntity
     {
     	super.readFromNBT(parTagCompound);
         ticksExisted = parTagCompound.getInteger("ticksExisted");
-//        hasSpawnedCastle = parTagCompound.getBoolean("hasSpawnedCastle");
     }
 
     @Override
@@ -43,11 +42,9 @@ public class TileEntityMagicBeanStalk extends TileEntity
     {
     	super.writeToNBT(parTagCompound);
         parTagCompound.setInteger("ticksExisted", ticksExisted);
-//        parTagCompound.setBoolean("hasSpawnedCastle", hasSpawnedCastle);
     }
     	
-	@Override
-	public void updateEntity()
+	public void update()
 	{
 		if (worldObj.isRemote || MagicBeansWorldData.get(worldObj).getHasCastleSpwaned())
 		{
@@ -56,25 +53,25 @@ public class TileEntityMagicBeanStalk extends TileEntity
 		
 		++ticksExisted;
 		markDirty();
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / MagicBeans.configTicksPerGrowStage), 2);
+		
+		worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(((BlockMagicBeanStalk)MagicBeans.blockMagicBeanStalk).AGE, Integer.valueOf(Math.min(7,  ticksExisted / MagicBeans.configTicksPerGrowStage))), 2);
 		if (ticksExisted >= MagicBeans.configTicksPerGrowStage * 9) 
 		{
 			// check if higher than clouds
-			if (yCoord < MagicBeans.configMaxStalkHeight)
+			if (this.getPos().getY() < MagicBeans.configMaxStalkHeight)
 			{
 	    		// check if can build next growing position
-	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord))
+	    	    if(worldObj.isAirBlock(pos.add(0, 1, 0)))
 	    	    {
 	    	    	// DEBUG
 	    	    	// System.out.println("Beanstalk still growing, hasSpawnedCastle = "+hasSpawnedCastle);
-	    	        worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);	    	        
+	    	        worldObj.setBlockState(pos.add(0, 1, 0), MagicBeans.blockMagicBeanStalk.getDefaultState());	    	        
 	    	    }   		
  			}
 			else // fully grown
 			{
 				MagicBeans.structureCastleTalia.shouldGenerate = true;
 				MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
-				// MagicBeansWorldData.get(worldObj).setHasCastleSpawned(MagicBeans.structureCastleTalia.finishedPopulatingEntities);
 			}
 		}
 	}

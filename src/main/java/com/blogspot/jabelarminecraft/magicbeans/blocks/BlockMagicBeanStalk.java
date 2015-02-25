@@ -24,24 +24,22 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
+// import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+// import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEntityProvider
 {
@@ -53,14 +51,13 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     	System.out.println("BlockMagicBeanStalk constructor()");
 
     	// Basic block setup
-        setBlockName("magicbeanstalk");
-        setBlockTextureName("magicbeans:magicbeanstalk_stage_0");
+        setUnlocalizedName("magicbeanstalk");
     	setBlockBounds(0.5F-0.125F, 0.0F, 0.5F-0.125F, 0.5F+0.125F, 1.0F, 0.5F+0.125F);
     }
     
     // identifies what food (ItemFood or ItemSeedFood type) is harvested from this
     @Override
-	public Item getItemDropped(int parMetadata, Random parRand, int parFortune)
+	public Item getItemDropped(IBlockState parState, Random parRand, int parFortune)
     {
         return MagicBeans.magicBeans;
     }
@@ -74,62 +71,46 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
         return 0; // will make this a configurable quantity
     }
     
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void registerBlockIcons(IIconRegister iconReg)
+//    {
+//    	// DEBUG
+//    	System.out.println("Registering icons for Magic Bean Stalk");
+//	    iconArray = new IIcon[8];
+//	    // seems that crops like to have 8 growth icons, but okay to 
+//	    // repeat actual texture if you want
+//	    iconArray[0] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_0");
+//	    iconArray[1] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_0");
+//	    iconArray[2] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_1");
+//	    iconArray[3] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_1");
+//	    iconArray[4] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_2");
+//	    iconArray[5] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_2");
+//	    iconArray[6] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_3");
+//	    iconArray[7] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_3");
+//    }
+//    
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//	public IIcon getIcon(int parSide, int parMetadata)
+//    {
+//    	blockIcon = iconArray[parMetadata];
+//		return blockIcon;
+//    }
+    
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconReg)
+	public boolean canPlaceBlockAt(World parWorld, BlockPos parPos) 
     {
-    	// DEBUG
-    	System.out.println("Registering icons for Magic Bean Stalk");
-	    iconArray = new IIcon[8];
-	    // seems that crops like to have 8 growth icons, but okay to 
-	    // repeat actual texture if you want
-	    iconArray[0] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_0");
-	    iconArray[1] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_0");
-	    iconArray[2] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_1");
-	    iconArray[3] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_1");
-	    iconArray[4] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_2");
-	    iconArray[5] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_2");
-	    iconArray[6] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_3");
-	    iconArray[7] = iconReg.registerIcon("magicbeans:magicbeanstalk_stage_3");
+        Block block = parWorld.getBlockState(parPos).getBlock();
+        return block.canSustainPlant(parWorld, parPos.add(0, -1, 0), EnumFacing.UP, this) || block == this;
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
-	public IIcon getIcon(int parSide, int parMetadata)
-    {
-    	blockIcon = iconArray[parMetadata];
-		return blockIcon;
-    }
-    
-    @Override
-	public boolean canPlaceBlockAt(World parWorld, int parX, int parY, int parZ) 
-    {
-        Block block = parWorld.getBlock(parX, parY - 1, parZ);
-        return block.canSustainPlant(parWorld, parX, parY - 1, parZ, ForgeDirection.UP, this) || block == this;
-    }
-    
-    @Override
-	public String getHarvestTool(int metadata)
+	public String getHarvestTool(IBlockState parState)
     {
         return null; // anything can harvest this block. should change to hatchet later
     }
-    
-    @Override
-	public void incrementGrowStage(World parWorld, int parX, int parY, int parZ)
-    {
-		// DEBUG
-		System.out.println("BlockMagicBeans incrementGrowStage growing");
-        int growStage = parWorld.getBlockMetadata(parX, parY, parZ) + MathHelper
-                .getRandomIntegerInRange(parWorld.rand, 2, 5);
-
-        if (growStage >= 7) // only 8 growth stages
-        {
-            growStage = 7;
-        }
-
-        parWorld.setBlockMetadataWithNotify(parX, parY, parZ, growStage, 2);
-    }
-    
+        
     /**
      * is the block grass, dirt or farmland
      */
@@ -160,24 +141,24 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
      *   Plains check if its grass or dirt
      *   Water check if its still water
      *
-     * @param world The current world
+     * @param parWorld The current world
      * @param x X Position
      * @param y Y Position
      * @param z Z position
-     * @param direction The direction relative to the given position the plant wants to be, typically its UP
-     * @param plantable The plant that wants to check
+     * @param parSide The direction relative to the given position the plant wants to be, typically its UP
+     * @param parPlantable The plant that wants to check
      * @return True to allow the plant to be planted/stay.
      */
     @Override
-	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	public boolean canSustainPlant(IBlockAccess parWorld, BlockPos parPos, EnumFacing parSide, IPlantable parPlantable)
     {
-        if (world.getBlock(x, y + 1, z) == MagicBeans.blockMagicBeanStalk)
+        if (parWorld.getBlockState(parPos.add(0, 1, 0)) == MagicBeans.blockMagicBeanStalk)
         {
         	return true;
         }
         else
         {
-        	return super.canSustainPlant(world, x, y, z, direction, plantable);
+        	return super.canSustainPlant(parWorld, parPos, parSide, parPlantable);
         }
     }
 
@@ -186,18 +167,18 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
      * cleared to be reused)
      */
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World parWorld, int parX, int parY, int parZ)
+	public AxisAlignedBB getCollisionBoundingBox(World parWorld, BlockPos parPos, IBlockState parState)
     {
-        return AxisAlignedBB.getBoundingBox(parX + minX, parY + minY, parZ + minZ, parX + maxX, parY + maxY, parZ + maxZ);
+        return AxisAlignedBB.fromBounds(parPos.getX() + minX, parPos.getY() + minY, parPos.getZ() + minZ, parPos.getX() + maxX, parPos.getY() + maxY, parPos.getZ() + maxZ);
     }
 
     /**
      * Ticks the block if it's been scheduled
      */
     @Override
-	public void updateTick(World parWorld, int parX, int parY, int parZ, Random parRand)
+	public void updateTick(World parWorld, BlockPos parPos, IBlockState parState, Random parRand)
     {
-    	super.updateTick(parWorld, parX, parY, parZ, parRand);
+    	super.updateTick(parWorld, parPos, parState, parRand);
     }
 
 	@Override
@@ -207,7 +188,7 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
 	}
 
 	@Override
-	public boolean isLadder(IBlockAccess parWord, int parX, int parY, int parZ, EntityLivingBase parEntity)
+	public boolean isLadder(IBlockAccess parWord, BlockPos parPos, EntityLivingBase parEntity)
 	{
 		return true;
 	}

@@ -25,6 +25,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -33,13 +36,13 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-
 public class BlockCropMagicBeans extends BlockBush implements IGrowable
 {
 //    @SideOnly(Side.CLIENT)
 //    protected IIcon[] iconArray;
-    
+
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 7);
+
     protected boolean isFullyGrown = false;
 
     public BlockCropMagicBeans()
@@ -52,6 +55,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
         setHardness(0.0F);
         setStepSound(soundTypeGrass);
         disableStats();
+        setDefaultState(blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
     }
 
     public BlockCropMagicBeans(Material parMaterial) 
@@ -64,6 +68,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
         setHardness(0.0F);
         setStepSound(soundTypeGrass);
         disableStats();
+        setDefaultState(blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
 	}
 
 	/**
@@ -78,34 +83,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
     public boolean isFullyGrown()
     {
     	return isFullyGrown;
-    }
-
-    public void incrementGrowStage(World parWorld, int parX, int parY, int parZ)
-    {
-    	if (!isFullyGrown)
-    	{
-            int growStage = parWorld.getBlockMetadata(parX, parY, parZ) + MathHelper
-                    .getRandomIntegerInRange(parWorld.rand, 2, 5);
-
-            if (growStage >= 7) // only 8 growth stages
-            {
-                growStage = 7;
-                isFullyGrown = true;
-            }
-
-            parWorld.setBlockMetadataWithNotify(parX, parY, parZ, growStage, 2);
-       	}
-    	else // fully grown so create the stalk above
-    	{
-    		// check if air above
-    	    if(parWorld.isAirBlock(parX, parY + 1, parZ))
-    	    {
-    	        parWorld.setBlock(parX, parY + 1, parZ, MagicBeans.blockMagicBeanStalk);
-    	    }
-    		
-    	}
-    }
-    
+    }    
 
     /**
      * The type of render function that is called for this block
@@ -116,57 +94,67 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
         return 1; // Cross like flowers
     }
 
-    @Override
-    // checks if finished growing (a grow stage of 7 is final stage)
-    public boolean func_149851_a(World parWorld, int parX, int parY, int parZ, 
-          boolean p_149851_5_)
-    {
-        return parWorld.getBlockMetadata(parX, parY, parZ) != 7;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see net.minecraft.block.IGrowable#func_149852_a(net.minecraft.world.World, 
-     * java.util.Random, int, int, int)
-     */
-    @Override
-    // basically an canBoneMealSpeedGrowth() method
-    public boolean func_149852_a(World p_149852_1_, Random parRand, int parX, 
-          int parY, int parZ)
-    {
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see net.minecraft.block.IGrowable#func_149853_b(net.minecraft.world.World, 
-     * java.util.Random, int, int, int)
-     */
-    @Override
-    public void func_149853_b(World parWorld, Random parRand, int parX, int parY, int parZ)
-    {
-        incrementGrowStage(parWorld, parX, parY, parZ);
-    }
-
 	@Override
-	public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_,
-			IBlockState p_176473_3_, boolean p_176473_4_) 
+	public boolean isStillGrowing(World parWorld, BlockPos parPos,
+			IBlockState parState, boolean parWorldIsRemote) 
 	{
-		// TODO Auto-generated method stub
-		return false;
+        return getMetaFromState(parWorld.getBlockState(parPos)) != 7;
 	}
 
 	@Override
-	public boolean canUseBonemeal(World worldIn, Random p_180670_2_,
-			BlockPos p_180670_3_, IBlockState p_180670_4_) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean canUseBonemeal(World parWorld, Random parRand,
+			BlockPos parPos, IBlockState parState) 
+	{
+		return true;
 	}
 
 	@Override
-	public void grow(World worldIn, Random p_176474_2_, BlockPos p_176474_3_,
-			IBlockState p_176474_4_) {
-		// TODO Auto-generated method stub
-		
+	public void grow(World parWorld, Random parRand, BlockPos parPos,
+			IBlockState parState) 
+	{
+    	if (!isFullyGrown)
+    	{
+			int i = ((Integer)parState.getValue(AGE)).intValue() + MathHelper.getRandomIntegerInRange(parWorld.rand, 2, 5);
+			
+			if (i > 7)
+			{
+			    i = 7;
+			}
+			
+			parWorld.setBlockState(parPos, parState.withProperty(AGE, Integer.valueOf(i)), 2);
+       	}
+    	else // fully grown so create the stalk above
+    	{
+    		// check if air above
+    	    if(parWorld.isAirBlock(parPos.add(0, 1, 0)))
+    	    {
+    	        parWorld.setBlockState(parPos.add(0, 1, 0), parState.withProperty(AGE, Integer.valueOf(0)), 2);
+    	    }
+    		
+    	}
 	}
+	
+	 /**
+     * Convert the given metadata into a BlockState for this Block
+     */
+    @Override
+	public IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+    }
+
+    /**
+     * Convert the BlockState into the correct metadata value
+     */
+    @Override
+	public int getMetaFromState(IBlockState state)
+    {
+        return ((Integer)state.getValue(AGE)).intValue();
+    }
+
+    @Override
+	protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] {AGE});
+    }
 }
