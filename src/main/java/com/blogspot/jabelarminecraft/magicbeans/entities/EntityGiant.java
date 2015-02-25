@@ -68,9 +68,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
-//    protected EntityAIBase aiSpecialAttack = new EntityGiantAISpecialAttack(this);
-//    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget2(this, EntityPlayer.class);
-   protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this);
+    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this);
 
     // fields related to being attacked
     protected Entity entityAttackedBy = null;
@@ -82,6 +80,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected Entity entityAttacked = null;
     protected float attackDamage = 1.0F;
     protected int knockback = 0;
+    protected int respiration = 0;
 	protected boolean wasDamageDone = false;
 	protected GiantAttack specialAttack;
     
@@ -165,14 +164,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		return false;
 	}
 	
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	public boolean isAIEnabled()
-    {
-        return true;
-    }
+//    /**
+//     * Returns true if the newer Entity AI code should be run
+//     */
+//    @Override
+//	public boolean isAIEnabled()
+//    {
+//        return true;
+//    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setupAI()
@@ -180,7 +179,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	@Override
 	public void setupAI() 
 	{
-        getNavigator().setBreakDoors(true);
+//        getNavigator().setBreakDoors(true);
         clearAITasks();
         tasks.addTask(0, aiSwimming);
         tasks.addTask(1, aiAttackOnCollide);
@@ -214,8 +213,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 
         if (entityAttacked instanceof EntityLivingBase)
         {
-            attackDamage += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)entityAttacked);
-            knockback += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)entityAttacked);
+            attackDamage += EnchantmentHelper.func_152377_a(getHeldItem(), ((EntityLivingBase)parEntity).getCreatureAttribute());
+            knockback += EnchantmentHelper.getRespiration(this); // the getRespiration() method is mis-named, it is getKnockback.
         }
 
         wasDamageDone = entityAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), attackDamage);

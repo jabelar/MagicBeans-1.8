@@ -30,6 +30,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
@@ -89,7 +90,7 @@ public class CommandStructure implements ICommand
 	public void processCommand(ICommandSender sender, String[] argString) 
 	{
 		theWorld = sender.getEntityWorld();
-	    thePlayer = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
+	    thePlayer = sender.getCommandSenderEntity();
 
 		
 		if (theWorld.isRemote)
@@ -165,26 +166,28 @@ public class CommandStructure implements ICommand
 
 	protected void regenerate(int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
-		int startX = (int) thePlayer.posX;
-		int startY = (int) thePlayer.posY;
-		int startZ = (int) thePlayer.posZ;
-//		dimX = CommandStructureCapture.dimX;
-//		dimY = CommandStructureCapture.dimY;
-//		dimZ = CommandStructureCapture.dimZ;
-	    
+		BlockPos pos = thePlayer.getPosition();
+		
+		int startX = pos.getX();
+		int startY = pos.getY();
+		int startZ = pos.getZ();
+			 
+		// first process blocks with default metadata
 	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
 	    {
 	    	for (int indX = 0; indX < dimX; indX++)
 	    	{
 	    		for (int indZ = 0; indZ < dimZ; indZ++)
 	    		{
-	    			if (blockMetaArray[indX][indY][indZ]==0)
+	    			int metaData = blockMetaArray[indX][indY][indZ];
+	    			if (metaData==0)
 	    			{
 	    				String blockName = blockNameArray[indX][indY][indZ];
 	    				if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
 	    				{
-							theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-									Block.getBlockFromName(blockName), 0, 2);
+		    				Block theBlock = Block.getBlockFromName(blockName);
+	    					theWorld.setBlockState(pos.add(parOffsetX+indX, parOffsetY+indY, parOffsetZ+indZ), 
+	    							theBlock.getStateFromMeta(metaData), 2);
 	    				}
 	    			}	    			
 	    		}
@@ -197,10 +200,13 @@ public class CommandStructure implements ICommand
 	    	{
 	    		for (int indZ = 0; indZ < dimZ; indZ++)
 	    		{
-	    			if (!(blockMetaArray[indX][indY][indZ]==0))
+	    			int metaData = blockMetaArray[indX][indY][indZ];
+	    			if (!(metaData==0))
 	    			{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-								Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+	    				String blockName = blockNameArray[indX][indY][indZ];
+	    				Block theBlock = Block.getBlockFromName(blockName);
+    					theWorld.setBlockState(pos.add(parOffsetX+indX, parOffsetY+indY, parOffsetZ+indZ), 
+    							theBlock.getStateFromMeta(metaData), 2);
 	    			}	    			
 	    		}
 	    	}
@@ -215,8 +221,10 @@ public class CommandStructure implements ICommand
     				String blockName = blockNameArray[indX][indY][indZ];
     				if (blockName.equals("minecraft:tripwire"))
     				{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-								Block.getBlockFromName(blockName), 0, 2);
+    	    			int metaData = blockMetaArray[indX][indY][indZ];
+	    				Block theBlock = Block.getBlockFromName(blockName);
+    					theWorld.setBlockState(pos.add(parOffsetX+indX, parOffsetY+indY, parOffsetZ+indZ), 
+    							theBlock.getStateFromMeta(metaData), 2);
     				}	    			
 	    		}
 	    	}
@@ -224,20 +232,24 @@ public class CommandStructure implements ICommand
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender var1) {
+	public boolean canCommandSenderUseCommand(ICommandSender var1) 
+	{
 		return true;
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
+	public boolean isUsernameIndex(String[] var1, int var2) 
+	{
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	@Override
-	public boolean isUsernameIndex(String[] var1, int var2) {
+	public List addTabCompletionOptions(ICommandSender sender, String[] args,
+			BlockPos pos) 
+	{
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 }

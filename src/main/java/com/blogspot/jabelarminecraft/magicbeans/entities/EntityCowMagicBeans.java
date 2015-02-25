@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -80,10 +81,11 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		                      .createEntityByName(entityToSpawnNameFull, worldObj);
 		                double spawnX = playerLeashedTo.posX+5*playerLookVector.xCoord;
 		                double spawnZ = playerLeashedTo.posZ+5*playerLookVector.zCoord;
-		                double spawnY = worldObj.getHeightValue((int)spawnX, (int)spawnZ);
+		                double spawnY = worldObj.getHorizon(new BlockPos(spawnX, 0, spawnZ)).getY();
+		                BlockPos spawnPos = new BlockPos(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ));
 		                
 		                // check to ensure there is open area for stranger to spawn, not underground
-		                if (worldObj.canBlockSeeTheSky(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ)))
+		                if (worldObj.canBlockSeeSky(spawnPos))
 		                {
 		                	entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
 			                      MathHelper.wrapAngleTo180_float(rand.nextFloat()
