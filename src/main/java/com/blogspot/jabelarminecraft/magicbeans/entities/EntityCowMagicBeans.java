@@ -16,18 +16,15 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
@@ -75,49 +72,6 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
         		Entity entityLeashedTo = getLeashedToEntity();
         		if (entityLeashedTo instanceof EntityPlayer)
         		{
-        			EntityPlayer thePlayer = (EntityPlayer)entityLeashedTo;
-    	            MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(worldObj, thePlayer, 5.0D, true);
-
-    	            if (movingobjectposition == null)
-    	            {
-    	            	// DEBUG
-    	            	System.out.println("Can't create entity because moving object position is null");
-    	                return ;
-    	            }
-    	            else
-    	            {
-    	                if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-    	                {
-    	                    BlockPos thePos = movingobjectposition.func_178782_a();
-
-    	                    if (!worldObj.isBlockModifiable(thePlayer, thePos))
-    	                    {
-    	                        return ;
-    	                    }
-
-    	                    if (worldObj.getBlockState(thePos).getBlock() instanceof BlockLiquid)
-    	                    {
-    	                        Entity entity = spawnCreature(thePlayer, itemStackIn.getMetadata(), thePos.getX() + 0.5D, thePos.getY() + 0.5D, thePos.getZ() + 0.5D);
-
-    	                        if (entity != null)
-    	                        {
-    	                            if (entity instanceof EntityLivingBase && itemStackIn.hasDisplayName())
-    	                            {
-    	                                ((EntityLiving)entity).setCustomNameTag(itemStackIn.getDisplayName());
-    	                            }
-
-    	                            if (!playerIn.capabilities.isCreativeMode)
-    	                            {
-    	                                --itemStackIn.stackSize;
-    	                            }
-
-    	                            playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-    	                        }
-    	                    }
-    	                }
-
-    	                return itemStackIn;
-        	        }
 
         			EntityPlayer playerLeashedTo = (EntityPlayer) entityLeashedTo;
         			Vec3 playerLookVector = playerLeashedTo.getLookVec();
@@ -127,9 +81,31 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		            {
 		                EntityLiving entityToSpawn = (EntityLiving) EntityList
 		                      .createEntityByName(entityToSpawnNameFull, worldObj);
+		                
 		                double spawnX = playerLeashedTo.posX+5*playerLookVector.xCoord;
 		                double spawnZ = playerLeashedTo.posZ+5*playerLookVector.zCoord;
-		                double spawnY = worldObj.getHorizon(new BlockPos(spawnX, 0, spawnZ)).getY();
+		                double chunkSpawnX = playerLeashedTo.chunkCoordX+5*playerLookVector.xCoord;
+		                if (chunkSpawnX <0 )
+		                {
+		                	chunkSpawnX += 16;
+		                }
+		                if (chunkSpawnX >= 16)
+		                {
+		                	chunkSpawnX -= 16;
+		                }
+		                double chunkSpawnZ = playerLeashedTo.chunkCoordY+5*playerLookVector.zCoord;
+		                if (chunkSpawnZ <0 )
+		                {
+		                	chunkSpawnZ += 16;
+		                }
+		                if (chunkSpawnZ >= 16)
+		                {
+		                	chunkSpawnZ -= 16;
+		                }
+		                double spawnY = worldObj.getChunkFromChunkCoords(MathHelper.floor_double(spawnX),  MathHelper.floor_double(spawnZ))
+		                		.getHeight(MathHelper.floor_double(chunkSpawnX),  MathHelper.floor_double(chunkSpawnZ));
+		                double chunkSpanY = spawnY;
+		                		
 		                BlockPos spawnPos = new BlockPos(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ));
 		                
 		                // check to ensure there is open area for stranger to spawn, not underground
