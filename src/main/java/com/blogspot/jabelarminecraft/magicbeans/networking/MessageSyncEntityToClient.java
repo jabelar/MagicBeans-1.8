@@ -75,9 +75,16 @@ public class MessageSyncEntityToClient implements IMessage
         {
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
         	IEntityMagicBeans theEntity = (IEntityMagicBeans)MagicBeansUtilities.getEntityByID(message.entityId, thePlayer.worldObj);
-        	theEntity.setSyncDataCompound(message.entitySyncDataCompound);
         	// DEBUG
-        	System.out.println("MessageSyncEnitityToClient onMessage(), entity ID = "+message.entityId);
+        	if (theEntity == null)
+        	{
+        		System.out.println("The entity is null for entity ID ="+message.entityId);
+        	}
+        	else
+        	{
+        		System.out.println("MessageSyncEnitityToClient onMessage(), entity ID = "+message.entityId);
+        	}
+        	theEntity.setSyncDataCompound(message.entitySyncDataCompound);
             return null; // no response in this case
         }
     }

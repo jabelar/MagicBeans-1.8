@@ -155,18 +155,18 @@ public class ClientProxy extends CommonProxy
 	{
     	RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 
-    	renderItem.getItemModelMesher().register(MagicBeans.magicBeans, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.magicBeans.getUnlocalizedName(), "inventory"));
-    	renderItem.getItemModelMesher().register(MagicBeans.itemGoldenEgg, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.itemGoldenEgg.getUnlocalizedName(), "inventory"));
-    	renderItem.getItemModelMesher().register(MagicBeans.goldenGooseMeat, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.goldenGooseMeat.getUnlocalizedName(), "inventory"));
-    	renderItem.getItemModelMesher().register(MagicBeans.bootsOfSafeFalling, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.bootsOfSafeFalling.getUnlocalizedName(), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.magicBeans, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.magicBeans.getUnlocalizedName().substring(5), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.itemGoldenEgg, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.itemGoldenEgg.getUnlocalizedName().substring(5), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.goldenGooseMeat, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.goldenGooseMeat.getUnlocalizedName().substring(5), "inventory"));
+    	renderItem.getItemModelMesher().register(MagicBeans.bootsOfSafeFalling, 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.bootsOfSafeFalling.getUnlocalizedName().substring(5), "inventory"));
 	}
 	
 	public void registerBlockRenderers()
 	{
     	RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
         
-    	renderItem.getItemModelMesher().register(Item.getItemFromBlock(MagicBeans.blockCloud), 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.blockCloud.getUnlocalizedName(), "inventory"));
-    	renderItem.getItemModelMesher().register(Item.getItemFromBlock(MagicBeans.blockMagicBeanStalk), 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.blockMagicBeanStalk.getUnlocalizedName(), "inventory"));
+    	renderItem.getItemModelMesher().register(Item.getItemFromBlock(MagicBeans.blockCloud), 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.blockCloud.getUnlocalizedName().substring(5), "inventory"));
+    	renderItem.getItemModelMesher().register(Item.getItemFromBlock(MagicBeans.blockMagicBeanStalk), 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.blockMagicBeanStalk.getUnlocalizedName().substring(5), "inventory"));
 	}
 	
 	/*	 

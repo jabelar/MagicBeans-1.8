@@ -46,6 +46,8 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		
 		initSyncDataCompound();
 		setupAI();
+		// DEBUG
+		System.out.println("EntityMysteriousStranger constructor for entity ID = "+getEntityId());
 	}
 
 	// you don't have to call this as it is called automatically during EntityLiving subclass creation

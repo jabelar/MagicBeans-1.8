@@ -1,5 +1,5 @@
 {
-    "parent": "magicbeans:block/magicbeanscloud",
+    "parent": "magicbeans:block/magicbeanstalk",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

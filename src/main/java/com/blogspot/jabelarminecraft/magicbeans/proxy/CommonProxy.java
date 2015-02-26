@@ -227,8 +227,8 @@ public class CommonProxy
     public void registerBlocks()
     {
         //example: GameRegistry.registerBlock(blockTomato, "tomatoes");
-    	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, MagicBeans.blockMagicBeanStalk.getUnlocalizedName());
-    	GameRegistry.registerBlock(MagicBeans.blockCloud, MagicBeans.blockCloud.getUnlocalizedName());
+    	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, MagicBeans.blockMagicBeanStalk.getUnlocalizedName().substring(5));
+    	GameRegistry.registerBlock(MagicBeans.blockCloud, MagicBeans.blockCloud.getUnlocalizedName().substring(5));
     }
 
     /** 
@@ -252,13 +252,13 @@ public class CommonProxy
 
         // spawn eggs are registered during entity registration
  
-        GameRegistry.registerItem(MagicBeans.itemGoldenEgg, MagicBeans.itemGoldenEgg.getUnlocalizedName());
-        GameRegistry.registerItem(MagicBeans.magicBeans, MagicBeans.magicBeans.getUnlocalizedName());
+        GameRegistry.registerItem(MagicBeans.itemGoldenEgg, MagicBeans.itemGoldenEgg.getUnlocalizedName().substring(5));
+        GameRegistry.registerItem(MagicBeans.magicBeans, MagicBeans.magicBeans.getUnlocalizedName().substring(5));
         // GameRegistry.registerItem(MagicBeans.helmetOfSafeFalling, MagicBeans.helmetOfSafeFalling.getName());
         // GameRegistry.registerItem(MagicBeans.chestplateOfSafeFalling, MagicBeans.chestplateOfSafeFalling.getName());
         // GameRegistry.registerItem(MagicBeans.leggingsOfSafeFalling, MagicBeans.leggingsOfSafeFalling.getName());
-        GameRegistry.registerItem(MagicBeans.bootsOfSafeFalling, MagicBeans.bootsOfSafeFalling.getUnlocalizedName());
-        GameRegistry.registerItem(MagicBeans.goldenGooseMeat, MagicBeans.goldenGooseMeat.getUnlocalizedName());
+        GameRegistry.registerItem(MagicBeans.bootsOfSafeFalling, MagicBeans.bootsOfSafeFalling.getUnlocalizedName().substring(5));
+        GameRegistry.registerItem(MagicBeans.goldenGooseMeat, MagicBeans.goldenGooseMeat.getUnlocalizedName().substring(5));
         
         // example: GameRegistry.registerCustomItemStack(name, itemStack);
     }
@@ -315,11 +315,11 @@ public class CommonProxy
         // or without spawn egg use
         // EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++modEntityID, MagicBeans.instance, 80, 3, false);
 
-        registerModEntity(EntityGoldenGoose.class, "Golden Goose");
-        registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
-        registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x4EF56D, 0xFCFC03);
-        registerModEntityWithEgg(EntityMysteriousStranger.class, "Mysterious Stranger", 0x8C6620, 0xA100B3);
-        registerModEntityWithEgg(EntityGiant.class, "Giant", 0xDB9112, 0x0AC798);
+        registerModEntity(EntityGoldenGoose.class, "golden_goose");
+        registerModEntityFastTracking(EntityGoldenEggThrown.class, "golden_egg");
+        registerModEntityWithEgg(EntityCowMagicBeans.class, "family_cow", 0x4EF56D, 0xFCFC03);
+        registerModEntityWithEgg(EntityMysteriousStranger.class, "mysterious_stranger", 0x8C6620, 0xA100B3);
+        registerModEntityWithEgg(EntityGiant.class, "giant", 0xDB9112, 0x0AC798);
     }
  
     /**
@@ -354,7 +354,7 @@ public class CommonProxy
      public void registerSpawnEgg(String parSpawnName, int parEggColor, int parEggSpotsColor)
      {
        Item itemSpawnEgg = new MagicBeansMonsterPlacer(parSpawnName, parEggColor, parEggSpotsColor).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase());
-       GameRegistry.registerItem(itemSpawnEgg, itemSpawnEgg.getUnlocalizedName());
+       GameRegistry.registerItem(itemSpawnEgg, itemSpawnEgg.getUnlocalizedName().substring(5));
      }
 
      /**

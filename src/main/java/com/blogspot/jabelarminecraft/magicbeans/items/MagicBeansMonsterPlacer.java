@@ -66,7 +66,7 @@ public class MagicBeansMonsterPlacer extends ItemMonsterPlacer
     public MagicBeansMonsterPlacer(String parEntityToSpawnName, int parPrimaryColor, 
           int parSecondaryColor)
     {
-        setHasSubtypes(true);
+        setHasSubtypes(false);
         maxStackSize = 64;
         setCreativeTab(CreativeTabs.tabMisc);
         setEntityToSpawnName(parEntityToSpawnName);

@@ -67,8 +67,6 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     		// chance mysterious stranger will appear
     		if (!getHasSpawnedMysteriousStranger() && (rand.nextFloat() < (1.0F / (30 * 20))))
     		{
-        		// DEBUG
-        		System.out.println("A mysterious stranger appears");
         		Entity entityLeashedTo = getLeashedToEntity();
         		if (entityLeashedTo instanceof EntityPlayer)
         		{
@@ -84,29 +82,11 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		                
 		                double spawnX = playerLeashedTo.posX+5*playerLookVector.xCoord;
 		                double spawnZ = playerLeashedTo.posZ+5*playerLookVector.zCoord;
-		                double chunkSpawnX = playerLeashedTo.chunkCoordX+5*playerLookVector.xCoord;
-		                if (chunkSpawnX <0 )
-		                {
-		                	chunkSpawnX += 16;
-		                }
-		                if (chunkSpawnX >= 16)
-		                {
-		                	chunkSpawnX -= 16;
-		                }
-		                double chunkSpawnZ = playerLeashedTo.chunkCoordY+5*playerLookVector.zCoord;
-		                if (chunkSpawnZ <0 )
-		                {
-		                	chunkSpawnZ += 16;
-		                }
-		                if (chunkSpawnZ >= 16)
-		                {
-		                	chunkSpawnZ -= 16;
-		                }
-		                double spawnY = worldObj.getChunkFromChunkCoords(MathHelper.floor_double(spawnX),  MathHelper.floor_double(spawnZ))
-		                		.getHeight(MathHelper.floor_double(chunkSpawnX),  MathHelper.floor_double(chunkSpawnZ));
-		                double chunkSpanY = spawnY;
-		                		
-		                BlockPos spawnPos = new BlockPos(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ));
+		                double spawnY = MagicBeansUtilities.getHeightValue(worldObj, spawnX, spawnZ);
+		                
+		                // DEBUG
+		                System.out.println("Trying to spawn mysterious stranger at "+spawnX+", "+spawnY+", "+spawnZ);
+		                BlockPos spawnPos = new BlockPos(spawnX, spawnY, spawnZ);
 		                
 		                // check to ensure there is open area for stranger to spawn, not underground
 		                if (worldObj.canBlockSeeSky(spawnPos))
@@ -119,6 +99,8 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 			                ((EntityMysteriousStranger)entityToSpawn).setCowSummonedBy(this);
 			                ((EntityMysteriousStranger)entityToSpawn).setPlayerSummonedBy(playerLeashedTo);
 			                setHasSpawnedMysteriousStranger(true);
+			        		// DEBUG
+			        		System.out.println("A mysterious stranger appears with entity ID = "+entityToSpawn.getEntityId());
 		                }
 		            }
 		            else

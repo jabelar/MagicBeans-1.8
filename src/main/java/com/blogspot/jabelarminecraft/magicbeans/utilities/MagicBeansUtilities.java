@@ -19,6 +19,7 @@ package com.blogspot.jabelarminecraft.magicbeans.utilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
@@ -127,7 +128,7 @@ public class MagicBeansUtilities
 	    }                
 	    return null;        
 	} 
-
+	
 	/**
 	* Based on code from http://pages.cs.wisc.edu/~ltorrey/cs302/examples/PigLatinTranslator.java
 	* Method to translate a sentence word by word.
@@ -215,7 +216,7 @@ public class MagicBeansUtilities
         if (!theEntity.worldObj.isRemote)
         {
         	// DEBUG
-        	System.out.println("sendEntitySyncPacket from server");
+        	System.out.println("sendEntitySyncPacket from server for entity ID ="+theEntity.getEntityId());
             MagicBeans.network.sendToAll(new MessageSyncEntityToClient(theEntity.getEntityId(), parEntity.getSyncDataCompound()));           
         }
     }
@@ -230,5 +231,29 @@ public class MagicBeansUtilities
             MagicBeans.network.sendToServer(new MessageSyncEntityToServer(theEntity.getEntityId(), parEntity.getSyncDataCompound()));           
         }
     }
+    
+    /*
+     * World utilities
+     */
+    
+    /**
+     * Finds the topmost block position at an X, Z position in the world
+     * @param parWorld
+     * @param parX
+     * @param parZ
+     * @return
+     */
+    public static double getHeightValue(World parWorld, double parX, double parZ)
+    {
+        int intX = MathHelper.floor_double(parX);
+        int intZ = MathHelper.floor_double(parZ);
 
+    	int chunkX = intX >> 4;
+    	int chunkZ = intZ >> 4;
+    	double height = parWorld.getChunkFromChunkCoords(chunkX, chunkZ)
+    			.getHeight(intX & 15, intZ & 15);
+    	
+    	return height;
+    }
 }
+

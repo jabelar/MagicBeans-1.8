@@ -47,6 +47,7 @@ public class ItemArmorSafeFalling extends ItemArmor
 	    // System.out.println("Constructor for ItemArmorSafeFalling");
 	    
 	    setUnlocalizedName(parUnlocalizedName);
+	    textureName = parUnlocalizedName;
 	}
 	
     @Override
@@ -76,7 +77,7 @@ public class ItemArmorSafeFalling extends ItemArmor
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
-	    return MagicBeans.MODID + ":armor/" + textureName + "_" + (armorType == 2 ? "2" : "1") + ".png";
+	    return MagicBeans.MODID + ":armor/" + textureName + ".png";
 	}
 
 	@Override
