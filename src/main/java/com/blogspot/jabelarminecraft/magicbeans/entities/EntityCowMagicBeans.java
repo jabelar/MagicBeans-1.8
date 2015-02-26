@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -31,6 +32,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
@@ -41,7 +44,7 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
+public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans, IEntityAdditionalSpawnData
 {
     public NBTTagCompound syncDataCompound = new NBTTagCompound();
     
@@ -54,7 +57,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		// DEBUG
 		System.out.println("EntityCowMagicBeans constructor");
 		
-		initSyncDataCompound();
+//		initSyncDataCompound(); // changing to IEntitySpawnData
 	}
 	
     
@@ -316,6 +319,29 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	public void sendEntitySyncPacket()
 	{
 		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#writeSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void writeSpawnData(ByteBuf parBuffer) 
+	{
+		initSyncDataCompound();
+		ByteBufUtils.writeTag(parBuffer, syncDataCompound);		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#readSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void readSpawnData(ByteBuf parBuffer) 
+	{
+		syncDataCompound = ByteBufUtils.readTag(parBuffer);	
+		// DEBUG
+		System.out.println("EntityCowMagicBeans spawn data received, scaleFactor = "+getScaleFactor()+", hasSpawnedMysteriousStranger = "+getHasSpawnedMysteriousStranger());
 	}
 
 }
