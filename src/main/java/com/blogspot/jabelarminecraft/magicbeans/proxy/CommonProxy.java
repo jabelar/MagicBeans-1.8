@@ -229,6 +229,11 @@ public class CommonProxy
         //example: GameRegistry.registerBlock(blockTomato, "tomatoes");
     	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, MagicBeans.blockMagicBeanStalk.getUnlocalizedName().substring(5));
     	GameRegistry.registerBlock(MagicBeans.blockCloud, MagicBeans.blockCloud.getUnlocalizedName().substring(5));
+    	
+        // each instance of your block should have a name that is unique within your mod.  use lower case.
+        GameRegistry.registerBlock(MagicBeans.blockSimple, "mbe01_block_simple");
+        // you don't need to register an item corresponding to the block, GameRegistry.registerBlock does this automatically.
+    	
     }
 
     /** 
