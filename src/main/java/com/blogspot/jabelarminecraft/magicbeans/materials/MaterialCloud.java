@@ -51,7 +51,7 @@ public class MaterialCloud extends Material
 		setAdventureModeExempt();
 		setNoPushMobility();
 		setRequiresTool();
-		setTranslucent(true);
+		setTranslucent(false);
 	}
 
     /**
@@ -90,7 +90,7 @@ public class MaterialCloud extends Material
     /**
      * Marks the material as translucent
      */
-    private Material setTranslucent(boolean parIsTranslucent)
+    public Material setTranslucent(boolean parIsTranslucent)
     {
         isTranslucent = parIsTranslucent;
         return this;
@@ -100,7 +100,7 @@ public class MaterialCloud extends Material
      * Makes blocks with this material require the correct tool to be harvested.
      */
     @Override
-	protected Material setRequiresTool()
+	public Material setRequiresTool()
     {
         requiresNoTool = false;
         return this;
@@ -110,7 +110,7 @@ public class MaterialCloud extends Material
      * Set the canBurn bool to True and return the current object.
      */
     @Override
-	protected Material setBurning()
+	public Material setBurning()
     {
         canBurn = true;
         return this;
@@ -176,7 +176,7 @@ public class MaterialCloud extends Material
      * This type of material can't be pushed, but pistons can move over it.
      */
     @Override
-	protected Material setNoPushMobility()
+	public Material setNoPushMobility()
     {
         mobilityFlag = 1;
         return this; // allows chaining
@@ -186,7 +186,7 @@ public class MaterialCloud extends Material
      * This type of material can't be pushed, and pistons are blocked to move.
      */
     @Override
-	protected Material setImmovableMobility()
+	public Material setImmovableMobility()
     {
         mobilityFlag = 2;
         return this; // allows chaining
@@ -196,7 +196,7 @@ public class MaterialCloud extends Material
      * @see #isAdventureModeExempt()
      */
     @Override
-	protected Material setAdventureModeExempt()
+	public Material setAdventureModeExempt()
     {
         isAdventureModeExempt = true;
         return this; // allows chaining
