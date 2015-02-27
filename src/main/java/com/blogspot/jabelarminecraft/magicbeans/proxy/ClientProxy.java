@@ -177,7 +177,7 @@ public class ClientProxy extends CommonProxy
     	renderItem.getItemModelMesher().register(Item.getItemFromBlock(MagicBeans.blockMagicBeanStalk), 0, new ModelResourceLocation(MagicBeans.MODID + ":" + MagicBeans.blockMagicBeanStalk.getUnlocalizedName().substring(5), "inventory"));
 
     	Item itemBlockSimple = GameRegistry.findItem("magicbeans", "mbe01_block_simple");
-        ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation("magicbeans", "inventory");
+        ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation("magicbeans:mbe01_block_simple", "inventory");
         final int DEFAULT_ITEM_SUBTYPE = 0;
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(itemBlockSimple, DEFAULT_ITEM_SUBTYPE, itemModelResourceLocation);
 

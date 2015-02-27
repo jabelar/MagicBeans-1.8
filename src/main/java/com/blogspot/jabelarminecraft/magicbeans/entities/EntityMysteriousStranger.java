@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityCreature;
@@ -24,6 +25,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
@@ -33,7 +36,7 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
+public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans, IEntityAdditionalSpawnData
 {
     private NBTTagCompound syncDataCompound = new NBTTagCompound();
 
@@ -44,7 +47,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	{
 		super(parWorld);
 		
-		initSyncDataCompound();
 		setupAI();
 		// DEBUG
 		System.out.println("EntityMysteriousStranger constructor for entity ID = "+getEntityId());
@@ -286,4 +288,27 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	{
 		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
 	}
+	
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#writeSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void writeSpawnData(ByteBuf parBuffer) 
+	{
+		initSyncDataCompound();
+		ByteBufUtils.writeTag(parBuffer, syncDataCompound);		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#readSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void readSpawnData(ByteBuf parBuffer) 
+	{
+		syncDataCompound = ByteBufUtils.readTag(parBuffer);	
+		// DEBUG
+		System.out.println("EntityMysteriousStranger spawn data received, scaleFactor = "+getScaleFactor());
+	}
+
 }

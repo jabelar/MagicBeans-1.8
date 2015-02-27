@@ -85,14 +85,14 @@ public class BlockCloud extends Block
 //        return !blockMaterial.blocksMovement();
 //    }
 
-    /**
-     * The type of render function that is called for this block
-     */
-    @Override
-	public int getRenderType()
-    {
-        return 0;
-    }
+//    /**
+//     * The type of render function that is called for this block
+//     */
+//    @Override
+//	public int getRenderType()
+//    {
+//        return 0;
+//    }
 
     /**
      * Returns true if the given side of this block type should be rendered (if it's solid or not), if the adjacent
@@ -111,6 +111,7 @@ public class BlockCloud extends Block
     @Override
 	public boolean isOpaqueCube()
     {
+    	this.getRenderType();
         return getMaterial().isOpaque();
     }
 

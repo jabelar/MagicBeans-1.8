@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -44,6 +45,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
@@ -55,7 +58,7 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IBossDisplayData
+public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IBossDisplayData, IEntityAdditionalSpawnData
 {
     private NBTTagCompound syncDataCompound = new NBTTagCompound();
 
@@ -91,7 +94,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	{
 		super(parWorld);
 		
-		initSyncDataCompound();
+// 		initSyncDataCompound(); // no longer need this here, as it is done in the write spawn data method
 		setupAI();
 		setSize(1.0F, 4.5F);
 		specialAttack = new GiantAttack(this, 12);
@@ -610,8 +613,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     @Override
     public void setDead()
     {
-    	// DEBUG
-    	System.out.println("Giant has died");
+//    	// DEBUG
+//    	System.out.println("Giant has died");
     	super.setDead();
     }
     
@@ -717,4 +720,27 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     	setSpecialAttackTimer(timer);
 
     }
+    
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#writeSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void writeSpawnData(ByteBuf parBuffer) 
+	{
+		initSyncDataCompound();
+		ByteBufUtils.writeTag(parBuffer, syncDataCompound);		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#readSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void readSpawnData(ByteBuf parBuffer) 
+	{
+		syncDataCompound = ByteBufUtils.readTag(parBuffer);	
+		// DEBUG
+		System.out.println("EntityGiant spawn data received, scaleFactor = "+getScaleFactor());
+	}
+
 }

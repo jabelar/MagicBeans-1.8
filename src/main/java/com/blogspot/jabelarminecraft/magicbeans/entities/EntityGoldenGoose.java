@@ -19,6 +19,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -39,11 +40,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
-public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
+public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans, IEntityAdditionalSpawnData
 {
     private NBTTagCompound syncDataCompound = new NBTTagCompound();
 
@@ -58,7 +61,6 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     public EntityGoldenGoose(World parWorld)
     {
         super(parWorld);
-        initSyncDataCompound();
         setSize(0.6F, 1.4F); // twice size of EntityChicken
         setGrowingAge(-24000); // start as child
         timeUntilNextEgg = rand.nextInt(MagicBeans.configTimeUntilNextEgg) + MagicBeans.configTimeUntilNextEgg;
@@ -402,4 +404,26 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 	{
 		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
 	}
+	
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#writeSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void writeSpawnData(ByteBuf parBuffer) 
+	{
+		initSyncDataCompound();
+		ByteBufUtils.writeTag(parBuffer, syncDataCompound);		
+	}
+
+	/* (non-Javadoc)
+	 * @see net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData#readSpawnData(io.netty.buffer.ByteBuf)
+	 */
+	@Override
+	public void readSpawnData(ByteBuf parBuffer) 
+	{
+		syncDataCompound = ByteBufUtils.readTag(parBuffer);	
+		// DEBUG
+		System.out.println("EntityGoldenGoose spawn data received, scaleFactor = "+getScaleFactor());
+	}
+
 }
