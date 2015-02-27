@@ -54,9 +54,7 @@ public class BlockCloud extends Block
         blockParticleGravity = 1.0F;
         slipperiness = 0.6F;
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-//        opaque = isOpaqueCube();
         lightOpacity = 20; // cast a light shadow
-//        canBlockGrass = !getMaterial().getCanBlockGrass();
         setBlockUnbreakable();
         setTickRandomly(false);
         setLightLevel(0.5F); // redstone light has light value of 1.0F
@@ -69,30 +67,14 @@ public class BlockCloud extends Block
     {
         return EnumWorldBlockLayer.TRANSLUCENT;
     }
-
-//    /**
-//     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-//     */
-//    @Override
-//	public boolean renderAsNormalBlock()
-//    {
-//        return true;
-//    }
-
-//    @Override
-//	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
-//    {
-//        return !blockMaterial.blocksMovement();
-//    }
-
-//    /**
-//     * The type of render function that is called for this block
-//     */
-//    @Override
-//	public int getRenderType()
-//    {
-//        return 0;
-//    }
+    
+    // Ensure that you can see through the translucent block properly, i.e. render inside sides.
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess parWorld, BlockPos parPos, EnumFacing parSide)
+    {
+    	return true;
+    }
 
     /**
      * Returns true if the given side of this block type should be rendered (if it's solid or not), if the adjacent
@@ -111,19 +93,8 @@ public class BlockCloud extends Block
     @Override
 	public boolean isOpaqueCube()
     {
-    	this.getRenderType();
         return getMaterial().isOpaque();
     }
-
-//    /**
-//     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-//     */
-//    @Override
-//	@SideOnly(Side.CLIENT)
-//    public int getRenderBlockPass()
-//    {
-//        return 1;
-//    }
 
     @Override
 	@SideOnly(Side.CLIENT)
@@ -155,8 +126,21 @@ public class BlockCloud extends Block
     @Override
 	public boolean isSideSolid(IBlockAccess world, BlockPos parPos, EnumFacing parSide)
     {
-        return (parSide == EnumFacing.UP); // can only build on top (cloud is generated not built)
+        return true; 
     }
+    
+    @Override
+	public boolean isNormalCube()
+    {
+    	return true;
+    }
+    
+    @Override
+	public boolean isNormalCube(IBlockAccess parWorld, BlockPos parPos)
+    {
+    	return true;
+    }
+    
 
     /**
      * Determines if a new block can be replace the space occupied by this one,

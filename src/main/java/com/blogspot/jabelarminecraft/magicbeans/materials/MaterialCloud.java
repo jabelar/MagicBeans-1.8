@@ -42,7 +42,7 @@ public class MaterialCloud extends Material
     @Override
 	public boolean isSolid()
     {
-        return true;
+        return false;
     }
     
     /**
@@ -78,7 +78,7 @@ public class MaterialCloud extends Material
     @Override
 	public boolean isOpaque()
     {
-        return true;
+        return false;
     }
 
     /**
