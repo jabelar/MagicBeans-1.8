@@ -1,0 +1,12 @@
+diff a/.gitignore b/.gitignore	(rejected hunks)
+@@ -1 +0,8 @@
+-/bin
++$ cat .gitignore
++/*
++!/src
++!build.gradle
++!*.project
++!/gradle
++!gradlew
++!gradlew.bat
+\ No newline at end of file
