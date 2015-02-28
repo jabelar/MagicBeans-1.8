@@ -91,7 +91,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
     @Override
      public int getRenderType()
     {
-        return 1; // Cross like flowers
+        return 3; // This has changed in 1.8.  1 seems to be liquids, 2 seems to be chest, 3 normal block
     }
 
 	@Override
