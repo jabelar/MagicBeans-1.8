@@ -61,7 +61,7 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     {
         return MagicBeans.magicBeans;
     }
-
+    
     /**
      * Returns the quantity of items to drop on block destruction.
      */
@@ -127,7 +127,7 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     @Override
     public int getRenderType()
     {
-        return 1; // you can see list of all possible types in renderBlockByRenderType() method
+        return 3; // 1 seems to be for liquids, 2 for chests, 3 for normal.
     }
 
     /**
